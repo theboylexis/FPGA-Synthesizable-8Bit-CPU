@@ -1,0 +1,9 @@
+# Icarus Verilog generated files
+*.vvp
+
+# Waveform files
+*.vcd
+*.fst
+
+# Generic simulation outputs
+*.out
