@@ -246,5 +246,3 @@ The architecture has been defined and the register file has been implemented and
 ## Author
 
 Alex Marfo Appiah
-Computer Engineering
-Kwame Nkrumah University of Science and Technology (KNUST)
