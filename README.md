@@ -1,22 +1,64 @@
 # FPGA-Synthesizable 8-Bit CPU
 
-A custom 8-bit processor designed from scratch in Verilog and built toward deployment on an FPGA.
+<p align="center">
+  <strong>A custom 8-bit processor designed from scratch in Verilog, verified in simulation, and built toward deployment on the Sipeed Tang Nano 20K FPGA.</strong>
+</p>
 
-The project explores processor design from the RTL level upward: register storage, arithmetic and logic, instruction encoding, control logic, memory, CPU integration, verification, and FPGA implementation.
+<p align="center">
+  <img src="https://img.shields.io/badge/HDL-Verilog-111111?style=flat-square" alt="Verilog"/>
+  <img src="https://img.shields.io/badge/Datapath-8--bit-111111?style=flat-square" alt="8-bit Datapath"/>
+  <img src="https://img.shields.io/badge/Instruction%20Width-16--bit-111111?style=flat-square" alt="16-bit Instructions"/>
+  <img src="https://img.shields.io/badge/Simulation-Icarus%20Verilog-111111?style=flat-square" alt="Icarus Verilog"/>
+  <img src="https://img.shields.io/badge/Target-Tang%20Nano%2020K-111111?style=flat-square" alt="Tang Nano 20K"/>
+</p>
 
-Rather than implementing an existing processor architecture, the CPU uses a custom instruction set designed specifically for this project.
+---
 
-## Project Goals
+## Overview
 
-The primary goals are to:
+This project is a custom 8-bit CPU developed from the RTL level upward.
 
-* Design a complete 8-bit CPU from fundamental digital logic concepts.
-* Develop a custom instruction set architecture.
-* Write synthesizable Verilog RTL for each hardware subsystem.
-* Verify individual modules with dedicated testbenches before integration.
-* Integrate the datapath, control unit, and memory into a functioning processor.
-* Synthesize and deploy the completed design on a Sipeed Tang Nano 20K FPGA.
-* Document design decisions, verification results, and engineering tradeoffs throughout development.
+The processor includes a custom instruction set, register file, arithmetic logic unit, program counter, program and data memory, instruction register, status register, instruction decoder, multi-cycle control unit, and full CPU datapath integration.
+
+Each subsystem is implemented independently in synthesizable Verilog, verified with dedicated testbenches, and then integrated into the complete processor.
+
+The current RTL implementation successfully executes machine-code programs containing arithmetic, logical, memory, data-movement, comparison, branching, jumping, immediate-load, and halt instructions.
+
+---
+
+## Current Status
+
+### RTL Design
+
+**Complete and verified in simulation.**
+
+* [x] Custom 16-bit instruction set
+* [x] 8 × 8-bit register file
+* [x] 8-bit ALU
+* [x] Zero, Negative, and Carry/Borrow flags
+* [x] 8-bit Program Counter
+* [x] 256 × 16-bit program memory
+* [x] 256 × 8-bit data memory
+* [x] 16-bit Instruction Register
+* [x] Status Register
+* [x] Instruction Decoder
+* [x] Multi-cycle Control Unit
+* [x] Full CPU datapath integration
+* [x] Full ISA integration verification
+
+### FPGA Implementation
+
+**Next phase.**
+
+* [ ] Synthesize complete design
+* [ ] Build Tang Nano 20K top-level wrapper
+* [ ] Add clock/reset integration
+* [ ] Define FPGA constraints
+* [ ] Generate bitstream
+* [ ] Program FPGA
+* [ ] Run hardware demonstration
+
+---
 
 ## Architecture
 
@@ -32,75 +74,90 @@ The primary goals are to:
 | Data memory               | 256 × 8-bit                              |
 | Memory organization       | Separate program and data memory         |
 | Status flags              | Zero (Z), Negative (N), Carry/Borrow (C) |
+| Execution model           | Multi-cycle FSM                          |
 | HDL                       | Verilog                                  |
 
-## High-Level Architecture
+---
+
+## High-Level Datapath
 
 ```text
-              ┌─────────────────────┐
-              │   Program Memory    │
-              │      256 × 16       │
-              └──────────┬──────────┘
-                         │
-                         ▼
-              ┌─────────────────────┐
-              │ Instruction Register│
-              └──────────┬──────────┘
-                         │
-                         ▼
-              ┌─────────────────────┐
-              │    Control Unit     │
-              └──────────┬──────────┘
-                         │
-          ┌──────────────┼──────────────┐
-          ▼              ▼              ▼
-   ┌─────────────┐  ┌─────────┐  ┌─────────────┐
-   │Register File│  │   ALU   │  │ Data Memory │
-   │  8 × 8-bit │◄─►│ 8-bit   │◄─►│   256 × 8   │
-   └─────────────┘  └─────────┘  └─────────────┘
-                         │
-                         ▼
-                    Z / N / C
+                    ┌─────────────────────┐
+                    │   Program Memory    │
+                    │      256 × 16       │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Instruction Register│
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │ Instruction Decoder │
+                    └──────────┬──────────┘
+                               │
+                     ┌─────────▼─────────┐
+                     │   Control Unit    │
+                     └─────────┬─────────┘
+                               │
+             ┌─────────────────┼─────────────────┐
+             │                 │                 │
+             ▼                 ▼                 ▼
+      ┌─────────────┐    ┌──────────┐     ┌─────────────┐
+      │Register File│───►│   ALU    │     │ Data Memory │
+      │  8 × 8-bit │◄───│  8-bit   │◄───►│   256 × 8   │
+      └─────────────┘    └────┬─────┘     └─────────────┘
+                              │
+                              ▼
+                       ┌─────────────┐
+                       │Status Reg.  │
+                       │   Z N C     │
+                       └─────────────┘
 ```
 
-## Instruction Set
+The CPU follows a multi-cycle execution model built around:
 
-The processor uses fixed-width 16-bit instructions.
+```text
+FETCH → DECODE → EXECUTE / MEMORY → WRITEBACK → FETCH
+```
 
-| Opcode | Instruction | Operation                                    |
-| ------ | ----------- | -------------------------------------------- |
-| `0000` | HALT        | Stop execution                               |
-| `0001` | ADD         | `Rd = Rs1 + Rs2`                             |
-| `0010` | SUB         | `Rd = Rs1 - Rs2`                             |
-| `0011` | AND         | `Rd = Rs1 AND Rs2`                           |
-| `0100` | OR          | `Rd = Rs1 OR Rs2`                            |
-| `0101` | XOR         | `Rd = Rs1 XOR Rs2`                           |
-| `0110` | MOV         | `Rd = Rs1`                                   |
-| `0111` | LOAD        | `Rd = MEM[address]`                          |
-| `1000` | STORE       | `MEM[address] = Rs`                          |
-| `1001` | CMP         | Compare `Rs1` and `Rs2`, update status flags |
-| `1010` | JMP         | `PC = address`                               |
-| `1011` | BEQ         | If `Z = 1`, `PC = address`                   |
-| `1100` | LDI         | `Rd = immediate`                             |
-| `1101` | RESERVED    | Reserved                                     |
-| `1110` | RESERVED    | Reserved                                     |
-| `1111` | RESERVED    | Reserved                                     |
+Different instructions use only the states they require.
 
-The current ISA contains **13 assigned opcodes and 3 reserved opcodes**.
+---
 
-Detailed instruction formats and encoding decisions are documented under `docs/`.
+## Instruction Set Architecture
+
+The processor uses fixed-width **16-bit instructions**.
+
+| Opcode | Instruction | Operation                             |
+| ------ | ----------- | ------------------------------------- |
+| `0000` | HALT        | Stop execution                        |
+| `0001` | ADD         | `Rd = Rs1 + Rs2`                      |
+| `0010` | SUB         | `Rd = Rs1 - Rs2`                      |
+| `0011` | AND         | `Rd = Rs1 AND Rs2`                    |
+| `0100` | OR          | `Rd = Rs1 OR Rs2`                     |
+| `0101` | XOR         | `Rd = Rs1 XOR Rs2`                    |
+| `0110` | MOV         | `Rd = Rs1`                            |
+| `0111` | LOAD        | `Rd = MEM[address]`                   |
+| `1000` | STORE       | `MEM[address] = Rs`                   |
+| `1001` | CMP         | Compare `Rs1` and `Rs2`, update flags |
+| `1010` | JMP         | `PC = address`                        |
+| `1011` | BEQ         | If `Z = 1`, `PC = address`            |
+| `1100` | LDI         | `Rd = immediate`                      |
+| `1101` | RESERVED    | Reserved                              |
+| `1110` | RESERVED    | Reserved                              |
+| `1111` | RESERVED    | Reserved                              |
+
+The ISA currently contains **13 assigned opcodes and 3 reserved opcodes**.
+
+---
 
 ## Instruction Formats
 
 ### Register-Type
 
-Used by:
-
-* ADD
-* SUB
-* AND
-* OR
-* XOR
+Used by `ADD`, `SUB`, `AND`, `OR`, and `XOR`.
 
 ```text
 15          12 11       9 8        6 5        3 2        0
@@ -128,21 +185,9 @@ R2 = R0 + R1
      4 bits       3 bits      3 bits           6 bits
 ```
 
-Example:
-
-```text
-MOV R2, R1
-
-R2 = R1
-```
-
 ### Immediate / Memory-Type
 
-Used by:
-
-* LOAD
-* STORE
-* LDI
+Used by `LDI`, `LOAD`, and `STORE`.
 
 ```text
 15          12 11       9 8                       1 0
@@ -156,28 +201,18 @@ Examples:
 
 ```text
 LDI R3, 42
-
 R3 = 42
-```
 
-```text
 LOAD R3, 0x80
-
 R3 = MEM[0x80]
-```
 
-```text
 STORE R3, 0x80
-
 MEM[0x80] = R3
 ```
 
 ### Jump-Type
 
-Used by:
-
-* JMP
-* BEQ
+Used by `JMP` and `BEQ`.
 
 ```text
 15          12 11                     4 3          0
@@ -185,21 +220,6 @@ Used by:
 |   opcode    |        address          |  reserved  |
 +-------------+-------------------------+------------+
      4 bits             8 bits              4 bits
-```
-
-Examples:
-
-```text
-JMP 0x20
-
-PC = 0x20
-```
-
-```text
-BEQ 0x20
-
-If Z = 1:
-    PC = 0x20
 ```
 
 ### Compare-Type
@@ -212,15 +232,223 @@ If Z = 1:
      4 bits       3 bits      3 bits           6 bits
 ```
 
-Example:
+`CMP` updates the status flags without writing to a general-purpose register.
+
+---
+
+## Verified CPU Subsystems
+
+### Register File
+
+The CPU contains eight 8-bit general-purpose registers with:
+
+* Two combinational read ports
+* One synchronous write port
+* 3-bit register addressing
+* Write-enable control
+* Active-high synchronous reset
+
+---
+
+### Arithmetic Logic Unit
+
+The ALU supports:
+
+```text
+ADD
+SUB
+AND
+OR
+XOR
+```
+
+It produces:
+
+```text
+Z = result is zero
+N = result bit 7
+C = carry-out for ADD / borrow indication for SUB
+```
+
+For subtraction:
+
+```text
+C = 1 → borrow occurred
+C = 0 → no borrow occurred
+```
+
+---
+
+### Program Counter
+
+The 8-bit Program Counter supports:
+
+```text
+Reset
+Increment
+Direct target load
+Hold
+```
+
+Control priority:
+
+```text
+reset > pc_write > pc_increment > hold
+```
+
+---
+
+### Status Register
+
+The CPU stores ALU condition flags in a dedicated status register.
+
+This allows instructions such as:
 
 ```text
 CMP R1, R2
-
-Compare R1 and R2
-Update Z, N, and C
-No general-purpose register is written
+BEQ 0x20
 ```
+
+to preserve the result of the comparison across instruction boundaries.
+
+---
+
+### Control Unit
+
+Instruction execution is coordinated using a multi-cycle finite-state machine.
+
+Main states:
+
+```text
+FETCH
+DECODE
+EXECUTE
+MEMORY
+WRITEBACK
+HALT
+```
+
+The control unit generates signals for:
+
+* Instruction loading
+* Program Counter updates
+* Register writes
+* Data-memory writes
+* ALU operation selection
+* Flag updates
+* Writeback-source selection
+* Processor halt state
+
+---
+
+## Verification
+
+Verification is performed using **Icarus Verilog**.
+
+Each major RTL block has its own testbench, followed by full CPU integration programs.
+
+### Module-Level Verification
+
+Verified modules include:
+
+```text
+Register File
+ALU
+Program Counter
+Program Memory
+Data Memory
+Instruction Register
+Status Register
+Instruction Decoder
+Control Unit
+```
+
+### End-to-End CPU Test
+
+The first complete processor program executed:
+
+```text
+LDI R0, 5
+LDI R1, 3
+ADD R2, R0, R1
+HALT
+```
+
+Final state:
+
+```text
+R0 = 5
+R1 = 3
+R2 = 8
+PC = 4
+CPU halted successfully
+```
+
+### Memory / Arithmetic Test
+
+A second integration program verified:
+
+```text
+LDI
+SUB
+MOV
+STORE
+LOAD
+HALT
+```
+
+Observed final state:
+
+```text
+R0 = 10
+R1 = 6
+R2 = 4
+R3 = 4
+R4 = 4
+
+MEM[0x20] = 4
+```
+
+### Logic / Control-Flow Test
+
+A third integration program verified:
+
+```text
+AND
+OR
+XOR
+CMP
+BEQ taken
+BEQ not taken
+JMP
+HALT
+```
+
+The branch and jump tests verify control flow by checking that instructions on skipped paths do not modify architectural state.
+
+---
+
+## ISA Verification Status
+
+| Instruction | Verified |
+| ----------- | -------: |
+| HALT        |        ✅ |
+| ADD         |        ✅ |
+| SUB         |        ✅ |
+| AND         |        ✅ |
+| OR          |        ✅ |
+| XOR         |        ✅ |
+| MOV         |        ✅ |
+| LOAD        |        ✅ |
+| STORE       |        ✅ |
+| CMP         |        ✅ |
+| JMP         |        ✅ |
+| BEQ         |        ✅ |
+| LDI         |        ✅ |
+
+**13 / 13 assigned instructions verified end-to-end in simulation.**
+
+---
 
 ## Repository Structure
 
@@ -262,137 +490,31 @@ FPGA-Synthesizable-8Bit-CPU/
     └── waveforms/
 ```
 
-## Development Approach
+---
 
-The processor is being developed incrementally.
+## Development Workflow
 
-Each subsystem is:
-
-1. Defined from its architectural requirements.
-2. Implemented as synthesizable Verilog RTL.
-3. Tested independently using a dedicated testbench.
-4. Integrated only after its expected behavior has been verified.
-
-This approach makes failures easier to isolate and creates verification evidence for each stage of the processor.
-
-## Current Progress
-
-### Architecture
-
-* [x] Define 8-bit datapath
-* [x] Define register architecture
-* [x] Define memory organization
-* [x] Define 16-bit instruction width
-* [x] Define initial instruction set
-* [x] Define instruction formats
-
-### RTL
-
-* [x] 8 × 8-bit register file
-* [x] Dual combinational register reads
-* [x] Synchronous register write
-* [x] Register-file reset logic
-* [x] 8-bit ALU
-* [x] ADD, SUB, AND, OR, XOR operations
-* [x] Zero, Negative, and Carry/Borrow flags
-* [x] 8-bit Program Counter
-* [x] Program Counter reset, increment, target load, and hold behavior
-* [ ] Program memory
-* [ ] Data memory
-* [ ] Instruction register
-* [ ] Instruction decoder
-* [ ] Control unit
-* [ ] CPU integration
-
-### Verification
-
-* [x] Register-file testbench
-* [x] Register reset verification
-* [x] Register write/read verification
-* [x] Dual-read verification
-* [x] Write-enable verification
-* [x] Register reset-priority verification
-* [x] ALU testbench
-* [x] ADD and carry-out verification
-* [x] SUB and borrow verification
-* [x] Logical operation verification
-* [x] Status flag verification
-* [x] Program Counter testbench
-* [x] Program Counter increment verification
-* [x] Program Counter target-load verification
-* [x] Program Counter hold verification
-* [x] Program Counter control-priority verification
-* [ ] Memory verification
-* [ ] Control-unit verification
-* [ ] Full CPU integration testing
-
-### FPGA
-
-* [ ] Synthesize complete processor
-* [ ] Create Tang Nano 20K top-level design
-* [ ] Define FPGA pin constraints
-* [ ] Program FPGA
-* [ ] Run hardware demonstration
-
-## Implemented Subsystems
-
-### Register File
-
-The processor includes an 8 × 8-bit register file with:
-
-* Two combinational read ports
-* One synchronous write port
-* 3-bit addressing for eight general-purpose registers
-* Active-high synchronous reset
-* Write-enable control
-
-The register file has been verified using Icarus Verilog for reset behavior, register writes, simultaneous dual-port reads, write-enable protection, and reset priority.
-
-### Arithmetic Logic Unit
-
-The current ALU supports:
-
-* ADD
-* SUB
-* AND
-* OR
-* XOR
-
-It produces an 8-bit result together with three status outputs:
-
-* **Z** — asserted when the result is zero
-* **N** — reflects bit 7 of the result
-* **C** — carry-out for addition and borrow indication for subtraction
-
-For subtraction:
+Each subsystem follows the same process:
 
 ```text
-C = 1 means a borrow occurred
-C = 0 means no borrow occurred
+Architecture
+    ↓
+RTL implementation
+    ↓
+Module testbench
+    ↓
+Functional verification
+    ↓
+CPU integration
+    ↓
+Integration testing
 ```
 
-The ALU has been verified with normal arithmetic, addition carry-out, subtraction borrow, equality, logical operations, and reserved control values.
+Generated simulation binaries are kept outside the source tree and excluded from version control.
 
-### Program Counter
-
-The 8-bit Program Counter supports:
-
-* Synchronous reset to address `0x00`
-* Sequential increment by one instruction word
-* Direct loading of an 8-bit target address
-* State hold when no control action is requested
-
-Its control priority is:
-
-```text
-reset > pc_write > pc_increment > hold
-```
-
-The Program Counter has been verified for reset, increment, target loading, control priority, and hold behavior.
+---
 
 ## Tools
-
-Current development environment:
 
 * Verilog HDL
 * Icarus Verilog
@@ -401,48 +523,38 @@ Current development environment:
 * GitHub
 * Sipeed Tang Nano 20K FPGA
 
-Additional synthesis and FPGA implementation tooling will be documented as the project progresses.
+FPGA synthesis and implementation tooling will be added during the hardware phase.
 
-## Initial Integration Program
+---
 
-A basic processor integration test is planned around:
+## Next Phase — FPGA Implementation
 
-```text
-LDI R0, 5
-LDI R1, 3
-ADD R2, R0, R1
-HALT
-```
+The RTL and ISA verification phase is complete.
 
-Expected behavior:
+The next stage is deployment to the **Sipeed Tang Nano 20K**:
 
 ```text
-R0 = 5
-R1 = 3
-R2 = R0 + R1
-R2 = 8
+RTL synthesis
+      ↓
+FPGA top-level integration
+      ↓
+Clock / reset handling
+      ↓
+Pin constraints
+      ↓
+Bitstream generation
+      ↓
+Program Tang Nano 20K
+      ↓
+Hardware validation
 ```
 
-This program will provide an initial end-to-end test of:
+The hardware phase will begin once the FPGA board is available.
 
-* instruction fetch
-* instruction decode
-* register access
-* ALU execution
-* register writeback
-* Program Counter sequencing
-* processor halt behavior
-
-## Status
-
-**Work in progress.**
-
-The architecture, register file, ALU, status flags, and Program Counter have been implemented and verified.
-
-**Next milestone:** Program memory.
+---
 
 ## Author
 
-Alex Marfo Appiah
+**Alex Marfo Appiah**
 Computer Engineering
 Kwame Nkrumah University of Science and Technology (KNUST)
