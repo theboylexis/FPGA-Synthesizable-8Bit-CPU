@@ -1,4 +1,3 @@
-```verilog
 module control_unit (
     input wire       clk,
     input wire       reset,
@@ -269,4 +268,3 @@ module control_unit (
     end
 
 endmodule
-```
