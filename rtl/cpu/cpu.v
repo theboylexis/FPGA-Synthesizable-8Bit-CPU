@@ -1,9 +1,12 @@
-module cpu (
+module cpu #(
+    parameter PROGRAM_FILE   = "programs/tests/program.hex",
+    parameter PROGRAM_LENGTH = 4
+)(
     input wire clk,
     input wire reset,
 
-    output wire       halted,
-    output wire [7:0] pc_debug,
+    output wire        halted,
+    output wire [7:0]  pc_debug,
     output wire [15:0] instruction_debug
 );
 
@@ -11,7 +14,6 @@ module cpu (
     // Program Counter
     // -------------------------------------------------
     wire [7:0] pc;
-
     wire       pc_write;
     wire       pc_increment;
     wire [7:0] pc_target;
@@ -27,13 +29,9 @@ module cpu (
     wire        instruction_load;
     wire [15:0] current_instruction;
 
-    // Debug outputs
     assign pc_debug          = pc;
     assign instruction_debug = current_instruction;
 
-    // -------------------------------------------------
-    // Program Counter
-    // -------------------------------------------------
     program_counter pc_unit (
         .clk(clk),
         .reset(reset),
@@ -43,17 +41,14 @@ module cpu (
         .pc(pc)
     );
 
-    // -------------------------------------------------
-    // Program Memory
-    // -------------------------------------------------
-    program_memory program_mem (
+    program_memory #(
+        .PROGRAM_FILE(PROGRAM_FILE),
+        .PROGRAM_LENGTH(PROGRAM_LENGTH)
+    ) program_mem (
         .address(pc),
         .instruction(program_instruction)
     );
 
-    // -------------------------------------------------
-    // Instruction Register
-    // -------------------------------------------------
     instruction_register instruction_reg (
         .clk(clk),
         .reset(reset),
@@ -62,7 +57,7 @@ module cpu (
         .instruction_out(current_instruction)
     );
 
-        // -------------------------------------------------
+    // -------------------------------------------------
     // Instruction Decoder
     // -------------------------------------------------
     wire [3:0] opcode;
@@ -91,8 +86,6 @@ module cpu (
     wire [2:0] alu_control;
     wire [1:0] writeback_select;
 
-    // Stored Zero flag from status register.
-    // We'll connect this properly when the status register is instantiated.
     wire stored_zero_flag;
 
     control_unit control (
@@ -112,10 +105,9 @@ module cpu (
         .halted(halted)
     );
 
-    // Jump/branch target comes directly from the decoded instruction.
     assign pc_target = address;
 
-        // -------------------------------------------------
+    // -------------------------------------------------
     // Register File
     // -------------------------------------------------
     wire [2:0] read_address_1;
@@ -125,27 +117,13 @@ module cpu (
     wire [7:0] register_data_2;
     wire [7:0] register_write_data;
 
-    /*
-     * Source-register selection:
-     *
-     * Normal R-type:
-     *   Rs1 = instruction[8:6]
-     *   Rs2 = instruction[5:3]
-     *
-     * CMP:
-     *   first source  = instruction[11:9]
-     *   second source = instruction[8:6]
-     *
-     * STORE:
-     *   source register = instruction[11:9]
-     */
     assign read_address_1 =
-        (opcode == 4'b1001) ? rd :   // CMP first source
-        (opcode == 4'b1000) ? rd :   // STORE source
+        (opcode == 4'b1001) ? rd  :
+        (opcode == 4'b1000) ? rd  :
                               rs1;
 
     assign read_address_2 =
-        (opcode == 4'b1001) ? rs1 :  // CMP second source
+        (opcode == 4'b1001) ? rs1 :
                               rs2;
 
     register_file registers (
@@ -200,7 +178,7 @@ module cpu (
         .carry_out(stored_carry_flag)
     );
 
-        // -------------------------------------------------
+    // -------------------------------------------------
     // Data Memory
     // -------------------------------------------------
     wire [7:0] memory_read_data;
@@ -208,13 +186,8 @@ module cpu (
     data_memory data_mem (
         .clk(clk),
         .write_enable(memory_write_enable),
-
-        // LOAD and STORE use the 8-bit address encoded in [8:1]
         .address(immediate),
-
-        // For STORE, register_data_1 contains the selected source register
         .write_data(register_data_1),
-
         .read_data(memory_read_data)
     );
 
@@ -226,19 +199,19 @@ module cpu (
     always @(*) begin
         case (writeback_select)
 
-            2'b00: begin // ALU result
+            2'b00: begin
                 writeback_data = alu_result;
             end
 
-            2'b01: begin // Data memory
+            2'b01: begin
                 writeback_data = memory_read_data;
             end
 
-            2'b10: begin // Immediate
+            2'b10: begin
                 writeback_data = immediate;
             end
 
-            2'b11: begin // Register source (MOV)
+            2'b11: begin
                 writeback_data = register_data_1;
             end
 
