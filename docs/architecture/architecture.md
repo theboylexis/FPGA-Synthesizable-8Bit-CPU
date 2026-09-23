@@ -78,7 +78,7 @@ Therefore, the PC addresses instruction words rather than individual bytes.
 For normal sequential execution:
 
 ```text
-PC_next = PC + 1
+PC_next := PC + 1
 ```
 
 For control-flow instructions, the control unit may instead load a target address into the PC.
@@ -239,10 +239,10 @@ Operation examples:
 
 ```text
 ADD Rd, Rs1, Rs2
-Rd ← Rs1 + Rs2
+Rd := Rs1 + Rs2
 
 SUB Rd, Rs1, Rs2
-Rd ← Rs1 - Rs2
+Rd := Rs1 - Rs2
 ```
 
 ### MOV-Type
@@ -260,7 +260,7 @@ Operation:
 ```text
 MOV Rd, Rs1
 
-Rd ← Rs1
+Rd := Rs1
 ```
 
 ### I-Type
@@ -286,7 +286,7 @@ For LOAD:
 ```text
 LOAD Rd, address
 
-Rd ← MEM[address]
+Rd := MEM[address]
 ```
 
 For STORE:
@@ -294,7 +294,7 @@ For STORE:
 ```text
 STORE Rs, address
 
-MEM[address] ← Rs
+MEM[address] := Rs
 ```
 
 For LDI:
@@ -302,7 +302,7 @@ For LDI:
 ```text
 LDI Rd, immediate
 
-Rd ← immediate
+Rd := immediate
 ```
 
 ### J-Type
@@ -327,16 +327,16 @@ Operations:
 ```text
 JMP address
 
-PC ← address
+PC := address
 ```
 
 ```text
 BEQ address
 
 if Z == 1:
-    PC ← address
+    PC := address
 else:
-    PC ← PC + 1
+    PC := PC + 1
 ```
 
 ### CMP-Type

@@ -70,14 +70,14 @@ The processor uses fixed-width 16-bit instructions.
 | Opcode | Instruction | Operation                              |
 | ------ | ----------- | -------------------------------------- |
 | `0000` | HALT        | Stop execution                         |
-| `0001` | ADD         | `Rd ← Rs1 + Rs2`                       |
-| `0010` | SUB         | `Rd ← Rs1 - Rs2`                       |
-| `0011` | AND         | `Rd ← Rs1 AND Rs2`                     |
-| `0100` | OR          | `Rd ← Rs1 OR Rs2`                      |
-| `0101` | XOR         | `Rd ← Rs1 XOR Rs2`                     |
-| `0110` | MOV         | `Rd ← Rs1`                             |
-| `0111` | LOAD        | `Rd ← MEM[address]`                    |
-| `1000` | STORE       | `MEM[address] ← Rs`                    |
+| `0001` | ADD         | `Rd := Rs1 + Rs2`                      |
+| `0010` | SUB         | `Rd := Rs1 - Rs2`                      |
+| `0011` | AND         | `Rd := Rs1 AND Rs2`                    |
+| `0100` | OR          | `Rd := Rs1 OR Rs2`                     |
+| `0101` | XOR         | `Rd := Rs1 XOR Rs2`                    |
+| `0110` | MOV         | `Rd := Rs1`                            |
+| `0111` | LOAD        | `Rd := MEM[address]`                   |
+| `1000` | STORE       | `MEM[address] := Rs`                   |
 | `1001` | CMP         | Compare two registers and update flags |
 | `1010` | JMP         | Unconditional jump                     |
 | `1011` | BEQ         | Branch if Zero flag is set             |
