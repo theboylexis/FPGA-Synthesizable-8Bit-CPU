@@ -7,3 +7,13 @@
 
 # Generic simulation outputs
 *.out
+# GOWIN generated outputs
+*.fs
+*.bin
+*.bit
+*.rpt
+*.log
+
+fpga/gowin/**/impl/
+fpga/gowin/**/temp/
+fpga/build/
