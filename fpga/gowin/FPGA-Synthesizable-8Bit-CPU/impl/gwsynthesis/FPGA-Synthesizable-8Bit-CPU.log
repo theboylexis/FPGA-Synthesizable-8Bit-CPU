@@ -1,0 +1,50 @@
+GowinSynthesis start
+Running parser ...
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\alu.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\control_unit.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\cpu.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\data_memory.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\instruction_decoder.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\instruction_register.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\program_counter.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\program_memory.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\register_file.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\status_register.v'
+Analyzing Verilog file 'C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\tang_nano_20k_top.v'
+Compiling module 'tang_nano_20k_top'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\tang_nano_20k_top.v":1)
+Compiling module 'cpu'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\cpu.v":1)
+Compiling module 'program_counter'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\program_counter.v":1)
+Compiling module 'program_memory(PROGRAM_FILE="program.hex")'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\program_memory.v":1)
+Extracting RAM for identifier 'memory'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\program_memory.v":9)
+Compiling module 'instruction_register'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\instruction_register.v":1)
+Compiling module 'instruction_decoder'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\instruction_decoder.v":1)
+Compiling module 'control_unit'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\control_unit.v":1)
+Compiling module 'register_file'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\register_file.v":1)
+Extracting RAM for identifier 'registers'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\register_file.v":18)
+Compiling module 'alu'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\alu.v":1)
+Compiling module 'status_register'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\status_register.v":1)
+Compiling module 'data_memory'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\data_memory.v":1)
+Extracting RAM for identifier 'memory'("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\data_memory.v":10)
+NOTE  (EX0101) : Current top module is "tang_nano_20k_top"
+[5%] Running netlist conversion ...
+Running device independent optimization ...
+[10%] Optimizing Phase 0 completed
+[15%] Optimizing Phase 1 completed
+[25%] Optimizing Phase 2 completed
+Running inference ...
+[30%] Inferring Phase 0 completed
+[40%] Inferring Phase 1 completed
+[50%] Inferring Phase 2 completed
+[55%] Inferring Phase 3 completed
+Running technical mapping ...
+[60%] Tech-Mapping Phase 0 completed
+[65%] Tech-Mapping Phase 1 completed
+[75%] Tech-Mapping Phase 2 completed
+[80%] Tech-Mapping Phase 3 completed
+[90%] Tech-Mapping Phase 4 completed
+WARN  (NL0002) : The module "data_memory" instantiated to "data_mem" is swept in optimizing("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\cpu.v":199)
+WARN  (NL0002) : The module "instruction_decoder" instantiated to "decoder" is swept in optimizing("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\cpu.v":82)
+WARN  (NL0002) : The module "status_register" instantiated to "status" is swept in optimizing("C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\src\cpu.v":186)
+[95%] Generate netlist file "C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\impl\gwsynthesis\FPGA-Synthesizable-8Bit-CPU.vg" completed
+[100%] Generate report file "C:\Users\EVA\Desktop\FPGA-Synthesizable-8Bit-CPU\fpga\gowin\FPGA-Synthesizable-8Bit-CPU\impl\gwsynthesis\FPGA-Synthesizable-8Bit-CPU_syn.rpt.html" completed
+GowinSynthesis finish

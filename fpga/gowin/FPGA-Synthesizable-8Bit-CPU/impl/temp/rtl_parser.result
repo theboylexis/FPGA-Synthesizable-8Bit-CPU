@@ -1,0 +1,94 @@
+[
+    {
+        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/tang_nano_20k_top.v",
+        "InstLine": 1,
+        "InstName": "tang_nano_20k_top",
+        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/tang_nano_20k_top.v",
+        "ModuleLine": 1,
+        "ModuleName": "tang_nano_20k_top",
+        "SubInsts": [
+            {
+                "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/tang_nano_20k_top.v",
+                "InstLine": 25,
+                "InstName": "cpu_core",
+                "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                "ModuleLine": 1,
+                "ModuleName": "cpu",
+                "SubInsts": [
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 39,
+                        "InstName": "pc_unit",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/program_counter.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "program_counter"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 51,
+                        "InstName": "program_mem",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/program_memory.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "program_memory"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 56,
+                        "InstName": "instruction_reg",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/instruction_register.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "instruction_register"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 74,
+                        "InstName": "decoder",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/instruction_decoder.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "instruction_decoder"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 95,
+                        "InstName": "control",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/control_unit.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "control_unit"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 133,
+                        "InstName": "registers",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/register_file.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "register_file"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 157,
+                        "InstName": "alu_unit",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/alu.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "alu"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 174,
+                        "InstName": "status",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/status_register.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "status_register"
+                    },
+                    {
+                        "InstFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v",
+                        "InstLine": 193,
+                        "InstName": "data_mem",
+                        "ModuleFile": "C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/data_memory.v",
+                        "ModuleLine": 1,
+                        "ModuleName": "data_memory"
+                    }
+                ]
+            }
+        ]
+    }
+]

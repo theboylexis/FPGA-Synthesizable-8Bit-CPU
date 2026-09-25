@@ -1,0 +1,1385 @@
+//
+//Written by GowinSynthesis
+//Tool Version "V1.9.12.03 (64-bit)"
+//Fri Sep 25 01:29:52 2026
+
+//Source file index table:
+//file0 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/alu.v"
+//file1 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/control_unit.v"
+//file2 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/cpu.v"
+//file3 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/data_memory.v"
+//file4 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/instruction_decoder.v"
+//file5 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/instruction_register.v"
+//file6 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/program_counter.v"
+//file7 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/program_memory.v"
+//file8 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/register_file.v"
+//file9 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/status_register.v"
+//file10 "\C:/Users/EVA/Desktop/FPGA-Synthesizable-8Bit-CPU/fpga/gowin/FPGA-Synthesizable-8Bit-CPU/src/tang_nano_20k_top.v"
+`timescale 100 ps/100 ps
+module program_counter (
+  clk_27mhz_d,
+  instruction_load_Z,
+  reset_button_d,
+  current_state,
+  pc_Z
+)
+;
+input clk_27mhz_d;
+input instruction_load_Z;
+input reset_button_d;
+input [2:0] current_state;
+output [7:0] pc_Z;
+wire n13_11;
+wire n12_1;
+wire n12_2;
+wire n11_1;
+wire n11_2;
+wire n10_1;
+wire n10_2;
+wire n9_1;
+wire n9_2;
+wire n8_1;
+wire n8_2;
+wire n7_1;
+wire n7_2;
+wire n6_1;
+wire n6_0_COUT;
+wire VCC;
+wire GND;
+  LUT4 n13_s3 (
+    .F(n13_11),
+    .I0(current_state[2]),
+    .I1(current_state[0]),
+    .I2(current_state[1]),
+    .I3(pc_Z[0]) 
+);
+defparam n13_s3.INIT=16'hFE01;
+  DFFRE pc_6_s1 (
+    .Q(pc_Z[6]),
+    .D(n7_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_6_s1.INIT=1'b0;
+  DFFRE pc_5_s1 (
+    .Q(pc_Z[5]),
+    .D(n8_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_5_s1.INIT=1'b0;
+  DFFRE pc_4_s1 (
+    .Q(pc_Z[4]),
+    .D(n9_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_4_s1.INIT=1'b0;
+  DFFRE pc_3_s1 (
+    .Q(pc_Z[3]),
+    .D(n10_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_3_s1.INIT=1'b0;
+  DFFRE pc_2_s1 (
+    .Q(pc_Z[2]),
+    .D(n11_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_2_s1.INIT=1'b0;
+  DFFRE pc_1_s1 (
+    .Q(pc_Z[1]),
+    .D(n12_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_1_s1.INIT=1'b0;
+  DFFRE pc_7_s1 (
+    .Q(pc_Z[7]),
+    .D(n6_1),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+defparam pc_7_s1.INIT=1'b0;
+  DFFR pc_0_s3 (
+    .Q(pc_Z[0]),
+    .D(n13_11),
+    .CLK(clk_27mhz_d),
+    .RESET(reset_button_d) 
+);
+defparam pc_0_s3.INIT=1'b0;
+  ALU n12_s (
+    .SUM(n12_1),
+    .COUT(n12_2),
+    .I0(pc_Z[1]),
+    .I1(pc_Z[0]),
+    .I3(VCC),
+    .CIN(GND) 
+);
+defparam n12_s.ALU_MODE=0;
+  ALU n11_s (
+    .SUM(n11_1),
+    .COUT(n11_2),
+    .I0(pc_Z[2]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n12_2) 
+);
+defparam n11_s.ALU_MODE=0;
+  ALU n10_s (
+    .SUM(n10_1),
+    .COUT(n10_2),
+    .I0(pc_Z[3]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n11_2) 
+);
+defparam n10_s.ALU_MODE=0;
+  ALU n9_s (
+    .SUM(n9_1),
+    .COUT(n9_2),
+    .I0(pc_Z[4]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n10_2) 
+);
+defparam n9_s.ALU_MODE=0;
+  ALU n8_s (
+    .SUM(n8_1),
+    .COUT(n8_2),
+    .I0(pc_Z[5]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n9_2) 
+);
+defparam n8_s.ALU_MODE=0;
+  ALU n7_s (
+    .SUM(n7_1),
+    .COUT(n7_2),
+    .I0(pc_Z[6]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n8_2) 
+);
+defparam n7_s.ALU_MODE=0;
+  ALU n6_s (
+    .SUM(n6_1),
+    .COUT(n6_0_COUT),
+    .I0(pc_Z[7]),
+    .I1(GND),
+    .I3(VCC),
+    .CIN(n7_2) 
+);
+defparam n6_s.ALU_MODE=0;
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* program_counter */
+module program_memory (
+  pc_Z,
+  program_instruction_1_142,
+  program_instruction_1_144,
+  program_instruction_1_150,
+  program_instruction_1_152
+)
+;
+input [7:0] pc_Z;
+output program_instruction_1_142;
+output program_instruction_1_144;
+output program_instruction_1_150;
+output program_instruction_1_152;
+wire program_instruction_1_147;
+wire program_instruction_1_148;
+wire VCC;
+wire GND;
+  LUT4 program_instruction_1_s71 (
+    .F(program_instruction_1_142),
+    .I0(pc_Z[0]),
+    .I1(pc_Z[1]),
+    .I2(program_instruction_1_147),
+    .I3(program_instruction_1_148) 
+);
+defparam program_instruction_1_s71.INIT=16'h4000;
+  LUT4 program_instruction_1_s72 (
+    .F(program_instruction_1_144),
+    .I0(pc_Z[1]),
+    .I1(pc_Z[0]),
+    .I2(program_instruction_1_147),
+    .I3(program_instruction_1_148) 
+);
+defparam program_instruction_1_s72.INIT=16'h4000;
+  LUT4 program_instruction_1_s74 (
+    .F(program_instruction_1_147),
+    .I0(pc_Z[4]),
+    .I1(pc_Z[5]),
+    .I2(pc_Z[6]),
+    .I3(pc_Z[7]) 
+);
+defparam program_instruction_1_s74.INIT=16'h0001;
+  LUT2 program_instruction_1_s75 (
+    .F(program_instruction_1_148),
+    .I0(pc_Z[2]),
+    .I1(pc_Z[3]) 
+);
+defparam program_instruction_1_s75.INIT=4'h1;
+  LUT4 program_instruction_1_s76 (
+    .F(program_instruction_1_150),
+    .I0(pc_Z[0]),
+    .I1(program_instruction_1_147),
+    .I2(pc_Z[2]),
+    .I3(pc_Z[3]) 
+);
+defparam program_instruction_1_s76.INIT=16'h0004;
+  LUT4 program_instruction_1_s77 (
+    .F(program_instruction_1_152),
+    .I0(pc_Z[1]),
+    .I1(program_instruction_1_147),
+    .I2(pc_Z[2]),
+    .I3(pc_Z[3]) 
+);
+defparam program_instruction_1_s77.INIT=16'h0004;
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* program_memory */
+module instruction_register (
+  program_instruction_1_152,
+  clk_27mhz_d,
+  instruction_load_Z,
+  reset_button_d,
+  program_instruction_1_142,
+  program_instruction_1_144,
+  program_instruction_1_150,
+  opcode,
+  address,
+  read_address_2
+)
+;
+input program_instruction_1_152;
+input clk_27mhz_d;
+input instruction_load_Z;
+input reset_button_d;
+input program_instruction_1_142;
+input program_instruction_1_144;
+input program_instruction_1_150;
+output [2:2] opcode;
+output [6:5] address;
+output [0:0] read_address_2;
+wire VCC;
+wire GND;
+  DFFRE instruction_out_14_s0 (
+    .Q(opcode[2]),
+    .D(program_instruction_1_152),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+  DFFRE instruction_out_12_s0 (
+    .Q(address[6]),
+    .D(program_instruction_1_142),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+  DFFRE instruction_out_9_s0 (
+    .Q(address[5]),
+    .D(program_instruction_1_144),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+  DFFRE instruction_out_3_s0 (
+    .Q(read_address_2[0]),
+    .D(program_instruction_1_150),
+    .CLK(clk_27mhz_d),
+    .CE(instruction_load_Z),
+    .RESET(reset_button_d) 
+);
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* instruction_register */
+module control_unit (
+  clk_27mhz_d,
+  reset_button_d,
+  opcode,
+  address,
+  instruction_load_Z,
+  current_state
+)
+;
+input clk_27mhz_d;
+input reset_button_d;
+input [2:2] opcode;
+input [6:6] address;
+output instruction_load_Z;
+output [2:0] current_state;
+wire next_state_2_28;
+wire next_state_2_29;
+wire next_state_0_19;
+wire next_state_1_12;
+wire [2:0] next_state;
+wire VCC;
+wire GND;
+  LUT4 next_state_2_s13 (
+    .F(next_state[2]),
+    .I0(current_state[1]),
+    .I1(next_state_2_28),
+    .I2(next_state_2_29),
+    .I3(current_state[2]) 
+);
+defparam next_state_2_s13.INIT=16'hF0EE;
+  LUT3 next_state_0_s10 (
+    .F(next_state[0]),
+    .I0(next_state_0_19),
+    .I1(next_state_2_29),
+    .I2(current_state[2]) 
+);
+defparam next_state_0_s10.INIT=8'hCA;
+  LUT2 next_state_1_s5 (
+    .F(next_state[1]),
+    .I0(opcode[2]),
+    .I1(next_state_1_12) 
+);
+defparam next_state_1_s5.INIT=4'h4;
+  LUT3 next_state_2_s14 (
+    .F(next_state_2_28),
+    .I0(address[6]),
+    .I1(opcode[2]),
+    .I2(current_state[0]) 
+);
+defparam next_state_2_s14.INIT=8'hD0;
+  LUT4 next_state_2_s15 (
+    .F(next_state_2_29),
+    .I0(current_state[0]),
+    .I1(opcode[2]),
+    .I2(address[6]),
+    .I3(current_state[1]) 
+);
+defparam next_state_2_s15.INIT=16'h00EB;
+  LUT4 next_state_0_s11 (
+    .F(next_state_0_19),
+    .I0(opcode[2]),
+    .I1(current_state[0]),
+    .I2(current_state[1]),
+    .I3(address[6]) 
+);
+defparam next_state_0_s11.INIT=16'hEBF7;
+  LUT4 next_state_1_s6 (
+    .F(next_state_1_12),
+    .I0(current_state[2]),
+    .I1(current_state[1]),
+    .I2(current_state[0]),
+    .I3(address[6]) 
+);
+defparam next_state_1_s6.INIT=16'h1000;
+  LUT3 instruction_load_Z_s0 (
+    .F(instruction_load_Z),
+    .I0(current_state[2]),
+    .I1(current_state[0]),
+    .I2(current_state[1]) 
+);
+defparam instruction_load_Z_s0.INIT=8'h01;
+  DFFR current_state_1_s0 (
+    .Q(current_state[1]),
+    .D(next_state[1]),
+    .CLK(clk_27mhz_d),
+    .RESET(reset_button_d) 
+);
+  DFFR current_state_0_s0 (
+    .Q(current_state[0]),
+    .D(next_state[0]),
+    .CLK(clk_27mhz_d),
+    .RESET(reset_button_d) 
+);
+  DFFR current_state_2_s0 (
+    .Q(current_state[2]),
+    .D(next_state[2]),
+    .CLK(clk_27mhz_d),
+    .RESET(reset_button_d) 
+);
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* control_unit */
+module register_file (
+  clk_27mhz_d,
+  reset_button_d,
+  writeback_data,
+  address,
+  read_address_2,
+  debug_register_address,
+  opcode,
+  current_state,
+  registers_ER,
+  registers_ER_0,
+  registers_ER_1,
+  registers_ER_2,
+  registers_ER_3,
+  registers_ER_4,
+  registers_ER_init,
+  registers_ER_49,
+  registers_ER_51,
+  registers_ER_53,
+  registers_ER_55,
+  registers_ER_57,
+  registers_ER_59,
+  registers_ER_61,
+  registers_ER_63,
+  registers_ER_65,
+  registers_ER_67,
+  registers_ER_69,
+  registers_ER_71,
+  registers_ER_73,
+  registers_ER_75,
+  registers_ER_77,
+  registers_ER_79
+)
+;
+input clk_27mhz_d;
+input reset_button_d;
+input [7:0] writeback_data;
+input [6:5] address;
+input [0:0] read_address_2;
+input [2:0] debug_register_address;
+input [2:2] opcode;
+input [2:0] current_state;
+output registers_ER;
+output registers_ER_0;
+output registers_ER_1;
+output registers_ER_2;
+output registers_ER_3;
+output registers_ER_4;
+output registers_ER_init;
+output registers_ER_49;
+output registers_ER_51;
+output registers_ER_53;
+output registers_ER_55;
+output registers_ER_57;
+output registers_ER_59;
+output registers_ER_61;
+output registers_ER_63;
+output registers_ER_65;
+output registers_ER_67;
+output registers_ER_69;
+output registers_ER_71;
+output registers_ER_73;
+output registers_ER_75;
+output registers_ER_77;
+output registers_ER_79;
+wire registers_ER_CL_160;
+wire registers_ER_CL_161;
+wire registers_ER_CL_165;
+wire registers_ER_CL_167;
+wire registers_ER_CL_169;
+wire registers_ER_CL_171;
+wire registers_ER_init_5;
+wire registers_ER_init_6;
+wire registers_ER_init_7;
+wire registers_ER_init_8;
+wire registers_ER_init_9;
+wire registers_ER_init_10;
+wire n37_6;
+wire registers_ER_CL_176;
+wire registers_ER_init_11;
+wire registers_ER_init_12;
+wire registers_ER_CL_22;
+wire registers_ER_CL_24;
+wire registers_ER_CL_26;
+wire registers_ER_init_13;
+wire registers_ER_init_14;
+wire registers_ER_init_15;
+wire registers_ER_init_16;
+wire registers_ER_init_17;
+wire registers_ER_init_18;
+wire registers_ER_19;
+wire registers_ER_20;
+wire registers_ER_21;
+wire registers_ER_22;
+wire registers_ER_23;
+wire registers_ER_24;
+wire registers_ER_25;
+wire registers_ER_26;
+wire registers_ER_27;
+wire registers_ER_28;
+wire registers_ER_29;
+wire registers_ER_30;
+wire registers_ER_31;
+wire registers_ER_32;
+wire registers_ER_33;
+wire registers_ER_34;
+wire [3:2] DO;
+wire VCC;
+wire GND;
+  LUT3 registers_ER_CL_s141 (
+    .F(registers_ER_CL_160),
+    .I0(registers_ER_init_12),
+    .I1(registers_ER_CL_22),
+    .I2(debug_register_address[0]) 
+);
+defparam registers_ER_CL_s141.INIT=8'hCA;
+  LUT3 registers_ER_CL_s142 (
+    .F(registers_ER_CL_161),
+    .I0(registers_ER_CL_24),
+    .I1(registers_ER_CL_26),
+    .I2(debug_register_address[0]) 
+);
+defparam registers_ER_CL_s142.INIT=8'hCA;
+  LUT4 registers_ER_CL_s144 (
+    .F(registers_ER_CL_165),
+    .I0(address[5]),
+    .I1(address[6]),
+    .I2(opcode[2]),
+    .I3(registers_ER_CL_176) 
+);
+defparam registers_ER_CL_s144.INIT=16'h1000;
+  LUT4 registers_ER_CL_s145 (
+    .F(registers_ER_CL_167),
+    .I0(address[6]),
+    .I1(opcode[2]),
+    .I2(address[5]),
+    .I3(registers_ER_CL_176) 
+);
+defparam registers_ER_CL_s145.INIT=16'h4000;
+  LUT4 registers_ER_CL_s146 (
+    .F(registers_ER_CL_169),
+    .I0(address[5]),
+    .I1(opcode[2]),
+    .I2(address[6]),
+    .I3(registers_ER_CL_176) 
+);
+defparam registers_ER_CL_s146.INIT=16'h1000;
+  LUT4 registers_ER_CL_s147 (
+    .F(registers_ER_CL_171),
+    .I0(opcode[2]),
+    .I1(address[5]),
+    .I2(address[6]),
+    .I3(registers_ER_CL_176) 
+);
+defparam registers_ER_CL_s147.INIT=16'h4000;
+  LUT2 registers_ER_init_s29 (
+    .F(registers_ER_init_5),
+    .I0(registers_ER_init_13),
+    .I1(registers_ER_init_14) 
+);
+defparam registers_ER_init_s29.INIT=4'hE;
+  LUT3 registers_ER_init_s30 (
+    .F(registers_ER_init),
+    .I0(registers_ER_init_11),
+    .I1(VCC),
+    .I2(registers_ER_init_5) 
+);
+defparam registers_ER_init_s30.INIT=8'hAC;
+  LUT3 registers_ER_CL_s148 (
+    .F(registers_ER_init_6),
+    .I0(registers_ER_init_12),
+    .I1(registers_ER_CL_22),
+    .I2(read_address_2[0]) 
+);
+defparam registers_ER_CL_s148.INIT=8'hCA;
+  LUT2 registers_ER_init_s31 (
+    .F(registers_ER_init_7),
+    .I0(registers_ER_init_15),
+    .I1(registers_ER_init_16) 
+);
+defparam registers_ER_init_s31.INIT=4'hE;
+  LUT3 registers_ER_init_s32 (
+    .F(registers_ER_init_8),
+    .I0(registers_ER_init_6),
+    .I1(VCC),
+    .I2(registers_ER_init_7) 
+);
+defparam registers_ER_init_s32.INIT=8'hAC;
+  LUT2 registers_ER_s47 (
+    .F(registers_ER_49),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_30) 
+);
+defparam registers_ER_s47.INIT=4'h8;
+  LUT2 registers_ER_s48 (
+    .F(registers_ER_51),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_29) 
+);
+defparam registers_ER_s48.INIT=4'h8;
+  LUT2 registers_ER_s49 (
+    .F(registers_ER_53),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_28) 
+);
+defparam registers_ER_s49.INIT=4'h8;
+  LUT2 registers_ER_s50 (
+    .F(registers_ER_55),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_27) 
+);
+defparam registers_ER_s50.INIT=4'h8;
+  LUT2 registers_ER_s51 (
+    .F(registers_ER_57),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_34) 
+);
+defparam registers_ER_s51.INIT=4'h8;
+  LUT2 registers_ER_s52 (
+    .F(registers_ER_59),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_33) 
+);
+defparam registers_ER_s52.INIT=4'h8;
+  LUT2 registers_ER_s53 (
+    .F(registers_ER_61),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_32) 
+);
+defparam registers_ER_s53.INIT=4'h8;
+  LUT2 registers_ER_s54 (
+    .F(registers_ER_63),
+    .I0(registers_ER_init_8),
+    .I1(registers_ER_31) 
+);
+defparam registers_ER_s54.INIT=4'h8;
+  LUT2 registers_ER_init_s33 (
+    .F(registers_ER_init_9),
+    .I0(registers_ER_init_17),
+    .I1(registers_ER_init_18) 
+);
+defparam registers_ER_init_s33.INIT=4'hE;
+  LUT3 registers_ER_init_s34 (
+    .F(registers_ER_init_10),
+    .I0(registers_ER_init_12),
+    .I1(VCC),
+    .I2(registers_ER_init_9) 
+);
+defparam registers_ER_init_s34.INIT=8'hAC;
+  LUT2 registers_ER_s55 (
+    .F(registers_ER_65),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_22) 
+);
+defparam registers_ER_s55.INIT=4'h8;
+  LUT2 registers_ER_s56 (
+    .F(registers_ER_67),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_21) 
+);
+defparam registers_ER_s56.INIT=4'h8;
+  LUT2 registers_ER_s57 (
+    .F(registers_ER_69),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_20) 
+);
+defparam registers_ER_s57.INIT=4'h8;
+  LUT2 registers_ER_s58 (
+    .F(registers_ER_71),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_19) 
+);
+defparam registers_ER_s58.INIT=4'h8;
+  LUT2 registers_ER_s59 (
+    .F(registers_ER_73),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_26) 
+);
+defparam registers_ER_s59.INIT=4'h8;
+  LUT2 registers_ER_s60 (
+    .F(registers_ER_75),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_25) 
+);
+defparam registers_ER_s60.INIT=4'h8;
+  LUT2 registers_ER_s61 (
+    .F(registers_ER_77),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_24) 
+);
+defparam registers_ER_s61.INIT=4'h8;
+  LUT2 registers_ER_s62 (
+    .F(registers_ER_79),
+    .I0(registers_ER_init_10),
+    .I1(registers_ER_23) 
+);
+defparam registers_ER_s62.INIT=4'h8;
+  LUT3 n37_s1 (
+    .F(n37_6),
+    .I0(opcode[2]),
+    .I1(address[6]),
+    .I2(registers_ER_CL_176) 
+);
+defparam n37_s1.INIT=8'h60;
+  LUT4 registers_ER_CL_s150 (
+    .F(registers_ER_CL_176),
+    .I0(current_state[0]),
+    .I1(current_state[1]),
+    .I2(reset_button_d),
+    .I3(current_state[2]) 
+);
+defparam registers_ER_CL_s150.INIT=16'h0100;
+  LUT4 registers_ER_CL_s152 (
+    .F(registers_ER_init_11),
+    .I0(debug_register_address[2]),
+    .I1(registers_ER_CL_160),
+    .I2(registers_ER_CL_161),
+    .I3(debug_register_address[1]) 
+);
+defparam registers_ER_CL_s152.INIT=16'h5044;
+  DFFRE registers_ER_CL_s19 (
+    .Q(registers_ER_init_12),
+    .D(VCC),
+    .CLK(clk_27mhz_d),
+    .CE(registers_ER_CL_165),
+    .RESET(reset_button_d) 
+);
+  DFFRE registers_ER_CL_s21 (
+    .Q(registers_ER_CL_22),
+    .D(VCC),
+    .CLK(clk_27mhz_d),
+    .CE(registers_ER_CL_167),
+    .RESET(reset_button_d) 
+);
+  DFFRE registers_ER_CL_s23 (
+    .Q(registers_ER_CL_24),
+    .D(VCC),
+    .CLK(clk_27mhz_d),
+    .CE(registers_ER_CL_169),
+    .RESET(reset_button_d) 
+);
+  DFFRE registers_ER_CL_s25 (
+    .Q(registers_ER_CL_26),
+    .D(VCC),
+    .CLK(clk_27mhz_d),
+    .CE(registers_ER_CL_171),
+    .RESET(reset_button_d) 
+);
+  DFF registers_ER_init_s (
+    .Q(registers_ER_init_13),
+    .D(registers_ER_init_5),
+    .CLK(clk_27mhz_d) 
+);
+  DFF registers_ER_init_s1 (
+    .Q(registers_ER_init_14),
+    .D(reset_button_d),
+    .CLK(clk_27mhz_d) 
+);
+  DFF registers_ER_init_s3 (
+    .Q(registers_ER_init_15),
+    .D(registers_ER_init_7),
+    .CLK(clk_27mhz_d) 
+);
+  DFF registers_ER_init_s5 (
+    .Q(registers_ER_init_16),
+    .D(reset_button_d),
+    .CLK(clk_27mhz_d) 
+);
+  DFF registers_ER_init_s7 (
+    .Q(registers_ER_init_17),
+    .D(registers_ER_init_9),
+    .CLK(clk_27mhz_d) 
+);
+  DFF registers_ER_init_s9 (
+    .Q(registers_ER_init_18),
+    .D(reset_button_d),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_0_s (
+    .DO({registers_ER_19,registers_ER_20,registers_ER_21,registers_ER_22}),
+    .DI(writeback_data[3:0]),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,GND,GND,GND}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_1_s (
+    .DO({registers_ER_23,registers_ER_24,registers_ER_25,registers_ER_26}),
+    .DI(writeback_data[7:4]),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,GND,GND,GND}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_0_s0 (
+    .DO({registers_ER_27,registers_ER_28,registers_ER_29,registers_ER_30}),
+    .DI(writeback_data[3:0]),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,GND,GND,read_address_2[0]}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_1_s0 (
+    .DO({registers_ER_31,registers_ER_32,registers_ER_33,registers_ER_34}),
+    .DI(writeback_data[7:4]),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,GND,GND,read_address_2[0]}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_0_s1 (
+    .DO({registers_ER_2,registers_ER_1,registers_ER_0,registers_ER}),
+    .DI(writeback_data[3:0]),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,debug_register_address[2:0]}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  RAM16SDP4 registers_registers_0_1_s1 (
+    .DO({DO[3:2],registers_ER_4,registers_ER_3}),
+    .DI({GND,GND,writeback_data[5:4]}),
+    .WAD({GND,GND,address[6:5]}),
+    .RAD({GND,debug_register_address[2:0]}),
+    .WRE(n37_6),
+    .CLK(clk_27mhz_d) 
+);
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* register_file */
+module alu (
+  registers_ER_65,
+  registers_ER_49,
+  registers_ER_67,
+  registers_ER_51,
+  registers_ER_69,
+  registers_ER_53,
+  registers_ER_71,
+  registers_ER_55,
+  registers_ER_73,
+  registers_ER_57,
+  registers_ER_75,
+  registers_ER_59,
+  registers_ER_77,
+  registers_ER_61,
+  registers_ER_79,
+  registers_ER_63,
+  alu_result_0_9,
+  alu_result_1_9,
+  alu_result_2_9,
+  alu_result_3_9,
+  alu_result_4_9,
+  alu_result_5_9,
+  alu_result_6_9,
+  alu_result_7_9
+)
+;
+input registers_ER_65;
+input registers_ER_49;
+input registers_ER_67;
+input registers_ER_51;
+input registers_ER_69;
+input registers_ER_53;
+input registers_ER_71;
+input registers_ER_55;
+input registers_ER_73;
+input registers_ER_57;
+input registers_ER_75;
+input registers_ER_59;
+input registers_ER_77;
+input registers_ER_61;
+input registers_ER_79;
+input registers_ER_63;
+output alu_result_0_9;
+output alu_result_1_9;
+output alu_result_2_9;
+output alu_result_3_9;
+output alu_result_4_9;
+output alu_result_5_9;
+output alu_result_6_9;
+output alu_result_7_9;
+wire alu_result_0_2_1;
+wire alu_result_1_2_1;
+wire alu_result_2_2_1;
+wire alu_result_3_2_1;
+wire alu_result_4_2_1;
+wire alu_result_5_2_1;
+wire alu_result_6_2_1;
+wire alu_result_7_2_0_COUT;
+wire VCC;
+wire GND;
+  ALU alu_result_0_2_s (
+    .SUM(alu_result_0_9),
+    .COUT(alu_result_0_2_1),
+    .I0(registers_ER_65),
+    .I1(registers_ER_49),
+    .I3(VCC),
+    .CIN(GND) 
+);
+defparam alu_result_0_2_s.ALU_MODE=2;
+  ALU alu_result_1_2_s (
+    .SUM(alu_result_1_9),
+    .COUT(alu_result_1_2_1),
+    .I0(registers_ER_67),
+    .I1(registers_ER_51),
+    .I3(VCC),
+    .CIN(alu_result_0_2_1) 
+);
+defparam alu_result_1_2_s.ALU_MODE=2;
+  ALU alu_result_2_2_s (
+    .SUM(alu_result_2_9),
+    .COUT(alu_result_2_2_1),
+    .I0(registers_ER_69),
+    .I1(registers_ER_53),
+    .I3(VCC),
+    .CIN(alu_result_1_2_1) 
+);
+defparam alu_result_2_2_s.ALU_MODE=2;
+  ALU alu_result_3_2_s (
+    .SUM(alu_result_3_9),
+    .COUT(alu_result_3_2_1),
+    .I0(registers_ER_71),
+    .I1(registers_ER_55),
+    .I3(VCC),
+    .CIN(alu_result_2_2_1) 
+);
+defparam alu_result_3_2_s.ALU_MODE=2;
+  ALU alu_result_4_2_s (
+    .SUM(alu_result_4_9),
+    .COUT(alu_result_4_2_1),
+    .I0(registers_ER_73),
+    .I1(registers_ER_57),
+    .I3(VCC),
+    .CIN(alu_result_3_2_1) 
+);
+defparam alu_result_4_2_s.ALU_MODE=2;
+  ALU alu_result_5_2_s (
+    .SUM(alu_result_5_9),
+    .COUT(alu_result_5_2_1),
+    .I0(registers_ER_75),
+    .I1(registers_ER_59),
+    .I3(VCC),
+    .CIN(alu_result_4_2_1) 
+);
+defparam alu_result_5_2_s.ALU_MODE=2;
+  ALU alu_result_6_2_s (
+    .SUM(alu_result_6_9),
+    .COUT(alu_result_6_2_1),
+    .I0(registers_ER_77),
+    .I1(registers_ER_61),
+    .I3(VCC),
+    .CIN(alu_result_5_2_1) 
+);
+defparam alu_result_6_2_s.ALU_MODE=2;
+  ALU alu_result_7_2_s (
+    .SUM(alu_result_7_9),
+    .COUT(alu_result_7_2_0_COUT),
+    .I0(registers_ER_79),
+    .I1(registers_ER_63),
+    .I3(VCC),
+    .CIN(alu_result_6_2_1) 
+);
+defparam alu_result_7_2_s.ALU_MODE=2;
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* alu */
+module cpu (
+  clk_27mhz_d,
+  reset_button_d,
+  debug_register_address,
+  registers_ER,
+  registers_ER_35,
+  registers_ER_36,
+  registers_ER_37,
+  registers_ER_38,
+  registers_ER_39,
+  registers_ER_init
+)
+;
+input clk_27mhz_d;
+input reset_button_d;
+input [2:0] debug_register_address;
+output registers_ER;
+output registers_ER_35;
+output registers_ER_36;
+output registers_ER_37;
+output registers_ER_38;
+output registers_ER_39;
+output registers_ER_init;
+wire writeback_data_2_8;
+wire program_instruction_1_142;
+wire program_instruction_1_144;
+wire program_instruction_1_150;
+wire program_instruction_1_152;
+wire instruction_load_Z;
+wire registers_ER_49;
+wire registers_ER_51;
+wire registers_ER_53;
+wire registers_ER_55;
+wire registers_ER_57;
+wire registers_ER_59;
+wire registers_ER_61;
+wire registers_ER_63;
+wire registers_ER_65;
+wire registers_ER_67;
+wire registers_ER_69;
+wire registers_ER_71;
+wire registers_ER_73;
+wire registers_ER_75;
+wire registers_ER_77;
+wire registers_ER_79;
+wire alu_result_0_9;
+wire alu_result_1_9;
+wire alu_result_2_9;
+wire alu_result_3_9;
+wire alu_result_4_9;
+wire alu_result_5_9;
+wire alu_result_6_9;
+wire alu_result_7_9;
+wire [7:0] writeback_data;
+wire [7:0] pc_Z;
+wire [2:2] opcode;
+wire [6:5] address;
+wire [0:0] read_address_2;
+wire [2:0] current_state;
+wire VCC;
+wire GND;
+  LUT4 writeback_data_2_s3 (
+    .F(writeback_data[2]),
+    .I0(read_address_2[0]),
+    .I1(alu_result_2_9),
+    .I2(current_state[2]),
+    .I3(writeback_data_2_8) 
+);
+defparam writeback_data_2_s3.INIT=16'hACCC;
+  LUT4 writeback_data_1_s3 (
+    .F(writeback_data[1]),
+    .I0(address[5]),
+    .I1(alu_result_1_9),
+    .I2(current_state[2]),
+    .I3(writeback_data_2_8) 
+);
+defparam writeback_data_1_s3.INIT=16'hACCC;
+  LUT3 writeback_data_0_s3 (
+    .F(writeback_data[0]),
+    .I0(current_state[2]),
+    .I1(writeback_data_2_8),
+    .I2(alu_result_0_9) 
+);
+defparam writeback_data_0_s3.INIT=8'hF8;
+  LUT3 writeback_data_7_s6 (
+    .F(writeback_data[7]),
+    .I0(writeback_data_2_8),
+    .I1(current_state[2]),
+    .I2(alu_result_7_9) 
+);
+defparam writeback_data_7_s6.INIT=8'h70;
+  LUT3 writeback_data_6_s6 (
+    .F(writeback_data[6]),
+    .I0(writeback_data_2_8),
+    .I1(current_state[2]),
+    .I2(alu_result_6_9) 
+);
+defparam writeback_data_6_s6.INIT=8'h70;
+  LUT3 writeback_data_5_s6 (
+    .F(writeback_data[5]),
+    .I0(writeback_data_2_8),
+    .I1(current_state[2]),
+    .I2(alu_result_5_9) 
+);
+defparam writeback_data_5_s6.INIT=8'h70;
+  LUT3 writeback_data_4_s6 (
+    .F(writeback_data[4]),
+    .I0(writeback_data_2_8),
+    .I1(current_state[2]),
+    .I2(alu_result_4_9) 
+);
+defparam writeback_data_4_s6.INIT=8'h70;
+  LUT3 writeback_data_3_s6 (
+    .F(writeback_data[3]),
+    .I0(writeback_data_2_8),
+    .I1(current_state[2]),
+    .I2(alu_result_3_9) 
+);
+defparam writeback_data_3_s6.INIT=8'h70;
+  LUT4 writeback_data_2_s4 (
+    .F(writeback_data_2_8),
+    .I0(current_state[0]),
+    .I1(current_state[1]),
+    .I2(address[6]),
+    .I3(opcode[2]) 
+);
+defparam writeback_data_2_s4.INIT=16'h0100;
+  program_counter pc_unit (
+    .clk_27mhz_d(clk_27mhz_d),
+    .instruction_load_Z(instruction_load_Z),
+    .reset_button_d(reset_button_d),
+    .current_state(current_state[2:0]),
+    .pc_Z(pc_Z[7:0])
+);
+  program_memory program_mem (
+    .pc_Z(pc_Z[7:0]),
+    .program_instruction_1_142(program_instruction_1_142),
+    .program_instruction_1_144(program_instruction_1_144),
+    .program_instruction_1_150(program_instruction_1_150),
+    .program_instruction_1_152(program_instruction_1_152)
+);
+  instruction_register instruction_reg (
+    .program_instruction_1_152(program_instruction_1_152),
+    .clk_27mhz_d(clk_27mhz_d),
+    .instruction_load_Z(instruction_load_Z),
+    .reset_button_d(reset_button_d),
+    .program_instruction_1_142(program_instruction_1_142),
+    .program_instruction_1_144(program_instruction_1_144),
+    .program_instruction_1_150(program_instruction_1_150),
+    .opcode(opcode[2]),
+    .address(address[6:5]),
+    .read_address_2(read_address_2[0])
+);
+  control_unit control (
+    .clk_27mhz_d(clk_27mhz_d),
+    .reset_button_d(reset_button_d),
+    .opcode(opcode[2]),
+    .address(address[6]),
+    .instruction_load_Z(instruction_load_Z),
+    .current_state(current_state[2:0])
+);
+  register_file registers (
+    .clk_27mhz_d(clk_27mhz_d),
+    .reset_button_d(reset_button_d),
+    .writeback_data(writeback_data[7:0]),
+    .address(address[6:5]),
+    .read_address_2(read_address_2[0]),
+    .debug_register_address(debug_register_address[2:0]),
+    .opcode(opcode[2]),
+    .current_state(current_state[2:0]),
+    .registers_ER(registers_ER),
+    .registers_ER_0(registers_ER_35),
+    .registers_ER_1(registers_ER_36),
+    .registers_ER_2(registers_ER_37),
+    .registers_ER_3(registers_ER_38),
+    .registers_ER_4(registers_ER_39),
+    .registers_ER_init(registers_ER_init),
+    .registers_ER_49(registers_ER_49),
+    .registers_ER_51(registers_ER_51),
+    .registers_ER_53(registers_ER_53),
+    .registers_ER_55(registers_ER_55),
+    .registers_ER_57(registers_ER_57),
+    .registers_ER_59(registers_ER_59),
+    .registers_ER_61(registers_ER_61),
+    .registers_ER_63(registers_ER_63),
+    .registers_ER_65(registers_ER_65),
+    .registers_ER_67(registers_ER_67),
+    .registers_ER_69(registers_ER_69),
+    .registers_ER_71(registers_ER_71),
+    .registers_ER_73(registers_ER_73),
+    .registers_ER_75(registers_ER_75),
+    .registers_ER_77(registers_ER_77),
+    .registers_ER_79(registers_ER_79)
+);
+  alu alu_unit (
+    .registers_ER_65(registers_ER_65),
+    .registers_ER_49(registers_ER_49),
+    .registers_ER_67(registers_ER_67),
+    .registers_ER_51(registers_ER_51),
+    .registers_ER_69(registers_ER_69),
+    .registers_ER_53(registers_ER_53),
+    .registers_ER_71(registers_ER_71),
+    .registers_ER_55(registers_ER_55),
+    .registers_ER_73(registers_ER_73),
+    .registers_ER_57(registers_ER_57),
+    .registers_ER_75(registers_ER_75),
+    .registers_ER_59(registers_ER_59),
+    .registers_ER_77(registers_ER_77),
+    .registers_ER_61(registers_ER_61),
+    .registers_ER_79(registers_ER_79),
+    .registers_ER_63(registers_ER_63),
+    .alu_result_0_9(alu_result_0_9),
+    .alu_result_1_9(alu_result_1_9),
+    .alu_result_2_9(alu_result_2_9),
+    .alu_result_3_9(alu_result_3_9),
+    .alu_result_4_9(alu_result_4_9),
+    .alu_result_5_9(alu_result_5_9),
+    .alu_result_6_9(alu_result_6_9),
+    .alu_result_7_9(alu_result_7_9)
+);
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+endmodule /* cpu */
+module tang_nano_20k_top (
+  clk_27mhz,
+  reset_button,
+  select_button,
+  led
+)
+;
+input clk_27mhz;
+input reset_button;
+input select_button;
+output [5:0] led;
+wire clk_27mhz_d;
+wire reset_button_d;
+wire select_button_d;
+wire n7_4;
+wire n6_4;
+wire n8_6;
+wire registers_ER;
+wire registers_ER_40;
+wire registers_ER_41;
+wire registers_ER_42;
+wire registers_ER_43;
+wire registers_ER_44;
+wire registers_ER_init;
+wire [5:0] led_d;
+wire [2:0] debug_register_address;
+wire VCC;
+wire GND;
+  IBUF clk_27mhz_ibuf (
+    .O(clk_27mhz_d),
+    .I(clk_27mhz) 
+);
+  IBUF reset_button_ibuf (
+    .O(reset_button_d),
+    .I(reset_button) 
+);
+  IBUF select_button_ibuf (
+    .O(select_button_d),
+    .I(select_button) 
+);
+  OBUF led_0_obuf (
+    .O(led[0]),
+    .I(led_d[0]) 
+);
+  OBUF led_1_obuf (
+    .O(led[1]),
+    .I(led_d[1]) 
+);
+  OBUF led_2_obuf (
+    .O(led[2]),
+    .I(led_d[2]) 
+);
+  OBUF led_3_obuf (
+    .O(led[3]),
+    .I(led_d[3]) 
+);
+  OBUF led_4_obuf (
+    .O(led[4]),
+    .I(led_d[4]) 
+);
+  OBUF led_5_obuf (
+    .O(led[5]),
+    .I(led_d[5]) 
+);
+  LUT2 led_d_5_s (
+    .F(led_d[5]),
+    .I0(registers_ER_init),
+    .I1(registers_ER_44) 
+);
+defparam led_d_5_s.INIT=4'h7;
+  LUT2 led_d_4_s (
+    .F(led_d[4]),
+    .I0(registers_ER_init),
+    .I1(registers_ER_43) 
+);
+defparam led_d_4_s.INIT=4'h7;
+  LUT2 led_d_3_s (
+    .F(led_d[3]),
+    .I0(registers_ER_init),
+    .I1(registers_ER_42) 
+);
+defparam led_d_3_s.INIT=4'h7;
+  LUT2 led_d_2_s (
+    .F(led_d[2]),
+    .I0(registers_ER_init),
+    .I1(registers_ER_41) 
+);
+defparam led_d_2_s.INIT=4'h7;
+  LUT2 led_d_1_s (
+    .F(led_d[1]),
+    .I0(registers_ER_init),
+    .I1(registers_ER_40) 
+);
+defparam led_d_1_s.INIT=4'h7;
+  LUT2 led_d_0_s (
+    .F(led_d[0]),
+    .I0(registers_ER_init),
+    .I1(registers_ER) 
+);
+defparam led_d_0_s.INIT=4'h7;
+  LUT2 n7_s0 (
+    .F(n7_4),
+    .I0(debug_register_address[0]),
+    .I1(debug_register_address[1]) 
+);
+defparam n7_s0.INIT=4'h6;
+  LUT3 n6_s0 (
+    .F(n6_4),
+    .I0(debug_register_address[0]),
+    .I1(debug_register_address[1]),
+    .I2(debug_register_address[2]) 
+);
+defparam n6_s0.INIT=8'h78;
+  DFFRE debug_register_address_1_s0 (
+    .Q(debug_register_address[1]),
+    .D(n7_4),
+    .CLK(clk_27mhz_d),
+    .CE(select_button_d),
+    .RESET(reset_button_d) 
+);
+  DFFRE debug_register_address_0_s0 (
+    .Q(debug_register_address[0]),
+    .D(n8_6),
+    .CLK(clk_27mhz_d),
+    .CE(select_button_d),
+    .RESET(reset_button_d) 
+);
+  DFFRE debug_register_address_2_s0 (
+    .Q(debug_register_address[2]),
+    .D(n6_4),
+    .CLK(clk_27mhz_d),
+    .CE(select_button_d),
+    .RESET(reset_button_d) 
+);
+  INV n8_s2 (
+    .O(n8_6),
+    .I(debug_register_address[0]) 
+);
+  cpu cpu_core (
+    .clk_27mhz_d(clk_27mhz_d),
+    .reset_button_d(reset_button_d),
+    .debug_register_address(debug_register_address[2:0]),
+    .registers_ER(registers_ER),
+    .registers_ER_35(registers_ER_40),
+    .registers_ER_36(registers_ER_41),
+    .registers_ER_37(registers_ER_42),
+    .registers_ER_38(registers_ER_43),
+    .registers_ER_39(registers_ER_44),
+    .registers_ER_init(registers_ER_init)
+);
+  VCC VCC_cZ (
+    .V(VCC)
+);
+  GND GND_cZ (
+    .G(GND)
+);
+  GSR GSR (
+    .GSRI(VCC) 
+);
+endmodule /* tang_nano_20k_top */
