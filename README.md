@@ -2,7 +2,8 @@
 
 <p align="center">
   <strong>
-    A custom multi-cycle 8-bit processor designed in Verilog, verified end-to-end in simulation, and implemented for the Sipeed Tang Nano 20K FPGA.
+    A custom multi-cycle 8-bit processor designed in Verilog, verified end-to-end in simulation,
+    and implemented for the Sipeed Tang Nano 20K FPGA.
   </strong>
 </p>
 
@@ -20,7 +21,7 @@
 
 This project is a custom 8-bit CPU developed to extend concepts from digital systems design into a complete processor implementation.
 
-The processor was designed from the RTL level upward in Verilog and includes a register file, ALU, Program Counter, program and data memory, Instruction Register, status register, instruction decoder, multi-cycle control unit, and writeback datapath.
+The processor was designed from the RTL level upward in Verilog and includes a register file, arithmetic logic unit, Program Counter, program and data memory, Instruction Register, status register, instruction decoder, multi-cycle control unit, and writeback datapath.
 
 The CPU uses a fixed-width 16-bit instruction format and a custom 13-instruction ISA. Each subsystem was verified independently before being integrated into the complete processor.
 
@@ -70,7 +71,7 @@ Register File ─────► ALU ─────► Status Register
                 └────► Writeback MUX ─────► Register File
 ```
 
-Instruction execution is coordinated through:
+Instruction execution is coordinated through the following states:
 
 ```text
 FETCH → DECODE → EXECUTE / MEMORY → WRITEBACK → FETCH
@@ -103,7 +104,7 @@ The processor uses 16-bit fixed-width instructions with 4-bit opcodes.
 | `1110` | RESERVED | Reserved |
 | `1111` | RESERVED | Reserved |
 
-The ISA contains **13 assigned instructions and 3 reserved opcodes**.
+The ISA contains 13 assigned instructions and 3 reserved opcodes.
 
 ### Instruction Formats
 
@@ -141,7 +142,7 @@ opcode | Rs1 | Rs2 | reserved
   4       3     3        6
 ```
 
-`CMP` performs a subtraction internally to update the status flags without writing a result to a general-purpose register.
+`CMP` performs a subtraction internally to update the status flags without writing the result to a general-purpose register.
 
 ---
 
@@ -149,7 +150,7 @@ opcode | Rs1 | Rs2 | reserved
 
 ### Register File
 
-The CPU contains eight writable 8-bit general-purpose registers with:
+The processor contains eight writable 8-bit general-purpose registers with:
 
 - two combinational read ports
 - one synchronous write port
@@ -198,7 +199,7 @@ WRITEBACK
 HALT
 ```
 
-The FSM generates the control signals required for instruction loading, Program Counter updates, ALU operation selection, register writes, memory writes, flag updates, writeback-source selection, and processor halt behavior.
+The FSM generates the control signals required for instruction loading, Program Counter updates, ALU selection, register writes, memory writes, flag updates, writeback selection, and halt behavior.
 
 ---
 
@@ -206,7 +207,7 @@ The FSM generates the control signals required for instruction loading, Program 
 
 Verification was performed at both module and processor level using Icarus Verilog.
 
-Major RTL blocks were tested independently before full CPU integration:
+Major RTL blocks were tested independently before CPU integration:
 
 ```text
 Register File
@@ -220,7 +221,7 @@ Instruction Decoder
 Control Unit
 ```
 
-The integrated processor was then tested using several machine-code programs.
+The integrated CPU was then tested using several machine-code programs.
 
 ### Arithmetic Test
 
@@ -289,7 +290,7 @@ Completed FPGA implementation work:
 - physical pin constraints
 - successful Place & Route
 
-The current implementation uses well under 1% of the available FPGA fabric.
+The implementation currently uses well under 1% of the available FPGA fabric.
 
 Physical board programming and hardware validation will begin once the Tang Nano 20K board is available.
 
