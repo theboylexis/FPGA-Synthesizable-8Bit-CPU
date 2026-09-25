@@ -1,10 +1,8 @@
-````md
 # FPGA-Synthesizable 8-Bit CPU
 
 <p align="center">
   <strong>
-    A custom multi-cycle 8-bit processor designed in Verilog, verified end-to-end in simulation,
-    and implemented for the Sipeed Tang Nano 20K FPGA.
+    A custom multi-cycle 8-bit processor designed in Verilog, verified end-to-end in simulation, and implemented for the Sipeed Tang Nano 20K FPGA.
   </strong>
 </p>
 
@@ -24,9 +22,9 @@ This project is a custom 8-bit CPU developed to extend concepts from digital sys
 
 The processor was designed from the RTL level upward in Verilog and includes a register file, ALU, Program Counter, program and data memory, Instruction Register, status register, instruction decoder, multi-cycle control unit, and writeback datapath.
 
-The CPU uses a fixed-width 16-bit instruction format and a custom 13-instruction ISA. Each subsystem was first verified independently before being integrated into the full processor.
+The CPU uses a fixed-width 16-bit instruction format and a custom 13-instruction ISA. Each subsystem was verified independently before being integrated into the complete processor.
 
-The complete ISA has been verified end-to-end in simulation using Icarus Verilog. The design has also been synthesized and successfully passed Place & Route for the Sipeed Tang Nano 20K FPGA.
+The full ISA has been verified end-to-end in simulation using Icarus Verilog. The design has also been synthesized and successfully passed Place & Route for the Sipeed Tang Nano 20K FPGA.
 
 ---
 
@@ -39,6 +37,7 @@ The complete ISA has been verified end-to-end in simulation using Icarus Verilog
 | General-purpose registers | 8 × 8-bit |
 | Register addressing | 3-bit |
 | Program Counter | 8-bit |
+| Instruction Register | 16-bit |
 | Program memory | 256 × 16-bit |
 | Data memory | 256 × 8-bit |
 | Memory organization | Separate program and data memory |
@@ -69,9 +68,9 @@ Register File ─────► ALU ─────► Status Register
      └────► Data Memory            │
                 │                  │
                 └────► Writeback MUX ─────► Register File
-````
+```
 
-Instruction execution is coordinated through the following states:
+Instruction execution is coordinated through:
 
 ```text
 FETCH → DECODE → EXECUTE / MEMORY → WRITEBACK → FETCH
@@ -85,64 +84,64 @@ Different instructions use only the states they require.
 
 The processor uses 16-bit fixed-width instructions with 4-bit opcodes.
 
-| Opcode | Instruction | Operation                             |
-| ------ | ----------- | ------------------------------------- |
-| `0000` | HALT        | Stop execution                        |
-| `0001` | ADD         | `Rd = Rs1 + Rs2`                      |
-| `0010` | SUB         | `Rd = Rs1 - Rs2`                      |
-| `0011` | AND         | `Rd = Rs1 AND Rs2`                    |
-| `0100` | OR          | `Rd = Rs1 OR Rs2`                     |
-| `0101` | XOR         | `Rd = Rs1 XOR Rs2`                    |
-| `0110` | MOV         | `Rd = Rs1`                            |
-| `0111` | LOAD        | `Rd = MEM[address]`                   |
-| `1000` | STORE       | `MEM[address] = Rs`                   |
-| `1001` | CMP         | Compare `Rs1` and `Rs2`, update flags |
-| `1010` | JMP         | `PC = address`                        |
-| `1011` | BEQ         | If `Z = 1`, `PC = address`            |
-| `1100` | LDI         | `Rd = immediate`                      |
-| `1101` | RESERVED    | Reserved                              |
-| `1110` | RESERVED    | Reserved                              |
-| `1111` | RESERVED    | Reserved                              |
+| Opcode | Instruction | Operation |
+| --- | --- | --- |
+| `0000` | HALT | Stop execution |
+| `0001` | ADD | `Rd = Rs1 + Rs2` |
+| `0010` | SUB | `Rd = Rs1 - Rs2` |
+| `0011` | AND | `Rd = Rs1 AND Rs2` |
+| `0100` | OR | `Rd = Rs1 OR Rs2` |
+| `0101` | XOR | `Rd = Rs1 XOR Rs2` |
+| `0110` | MOV | `Rd = Rs1` |
+| `0111` | LOAD | `Rd = MEM[address]` |
+| `1000` | STORE | `MEM[address] = Rs` |
+| `1001` | CMP | Compare `Rs1` and `Rs2`, update flags |
+| `1010` | JMP | `PC = address` |
+| `1011` | BEQ | If `Z = 1`, `PC = address` |
+| `1100` | LDI | `Rd = immediate` |
+| `1101` | RESERVED | Reserved |
+| `1110` | RESERVED | Reserved |
+| `1111` | RESERVED | Reserved |
 
-The ISA contains 13 assigned instructions and 3 reserved opcodes.
+The ISA contains **13 assigned instructions and 3 reserved opcodes**.
 
 ### Instruction Formats
 
-**Register type**
+#### Register Type
+
+Used by `ADD`, `SUB`, `AND`, `OR`, and `XOR`.
 
 ```text
 opcode | Rd | Rs1 | Rs2 | reserved
   4      3     3     3       3
 ```
 
-Used by `ADD`, `SUB`, `AND`, `OR`, and `XOR`.
+#### Immediate / Memory Type
 
-**Immediate / memory type**
+Used by `LDI`, `LOAD`, and `STORE`.
 
 ```text
 opcode | R | immediate/address | reserved
   4      3          8              1
 ```
 
-Used by `LDI`, `LOAD`, and `STORE`.
+#### Jump Type
 
-**Jump type**
+Used by `JMP` and `BEQ`.
 
 ```text
 opcode | address | reserved
   4        8         4
 ```
 
-Used by `JMP` and `BEQ`.
-
-**Compare type**
+#### Compare Type
 
 ```text
 opcode | Rs1 | Rs2 | reserved
   4       3     3        6
 ```
 
-`CMP` performs a subtraction internally to update the status flags without writing the result to a general-purpose register.
+`CMP` performs a subtraction internally to update the status flags without writing a result to a general-purpose register.
 
 ---
 
@@ -150,12 +149,12 @@ opcode | Rs1 | Rs2 | reserved
 
 ### Register File
 
-The processor contains eight writable 8-bit general-purpose registers with:
+The CPU contains eight writable 8-bit general-purpose registers with:
 
-* two combinational read ports
-* one synchronous write port
-* 3-bit register addressing
-* active-high synchronous reset
+- two combinational read ports
+- one synchronous write port
+- 3-bit register addressing
+- active-high synchronous reset
 
 ### ALU and Status Flags
 
@@ -177,7 +176,7 @@ N = most significant result bit
 C = carry-out for ADD / borrow indication for SUB
 ```
 
-For subtraction, this design defines:
+For subtraction:
 
 ```text
 C = 1 → borrow occurred
@@ -199,16 +198,7 @@ WRITEBACK
 HALT
 ```
 
-The FSM generates the control signals required for:
-
-* instruction loading
-* Program Counter updates
-* ALU operation selection
-* register writes
-* memory writes
-* flag updates
-* writeback-source selection
-* halt behavior
+The FSM generates the control signals required for instruction loading, Program Counter updates, ALU operation selection, register writes, memory writes, flag updates, writeback-source selection, and processor halt behavior.
 
 ---
 
@@ -216,7 +206,7 @@ The FSM generates the control signals required for:
 
 Verification was performed at both module and processor level using Icarus Verilog.
 
-Individual testbenches were written for the major RTL blocks, including:
+Major RTL blocks were tested independently before full CPU integration:
 
 ```text
 Register File
@@ -230,7 +220,7 @@ Instruction Decoder
 Control Unit
 ```
 
-The integrated CPU was then tested using several machine-code programs.
+The integrated processor was then tested using several machine-code programs.
 
 ### Arithmetic Test
 
@@ -262,7 +252,7 @@ LOAD
 HALT
 ```
 
-with the expected final register and memory values.
+with the expected register and memory state.
 
 ### Logic / Control-Flow Test
 
@@ -279,7 +269,7 @@ JMP
 HALT
 ```
 
-The branch and jump tests confirmed that instructions on skipped paths did not modify architectural state.
+Branch and jump behavior was verified by confirming that instructions on skipped paths did not modify architectural state.
 
 **Result: 13 / 13 assigned instructions verified end-to-end in simulation.**
 
@@ -291,34 +281,55 @@ The CPU has been brought into GOWIN EDA and targeted to the Sipeed Tang Nano 20K
 
 Completed FPGA implementation work:
 
-* full CPU synthesis
-* Tang Nano 20K board-level top module
-* 27 MHz clock integration
-* reset and register-selection inputs
-* LED-based debug output
-* physical pin constraints
-* successful Place & Route
+- full CPU synthesis
+- Tang Nano 20K board-level top module
+- 27 MHz clock integration
+- reset and register-selection inputs
+- LED-based register debug output
+- physical pin constraints
+- successful Place & Route
 
-Current implementation resource usage remains below 1% of the available FPGA fabric.
+The current implementation uses well under 1% of the available FPGA fabric.
 
-The remaining step is physical hardware validation once the Tang Nano 20K board is available.
+Physical board programming and hardware validation will begin once the Tang Nano 20K board is available.
 
 ---
 
-## Project Structure
+## Repository Structure
 
 ```text
 FPGA-Synthesizable-8Bit-CPU/
-├── rtl/              # Reusable processor RTL
-├── tb/               # Module and integration testbenches
-├── programs/         # Machine-code test programs
-├── simulations/      # Simulation outputs
-├── docs/             # Architecture, ISA and verification notes
-└── fpga/
-    ├── top/          # Tang Nano 20K board wrapper
-    ├── constraints/  # FPGA pin constraints
-    ├── gowin/        # GOWIN project files
-    └── build/        # FPGA build outputs
+├── rtl/
+│   ├── alu/
+│   ├── control/
+│   ├── cpu/
+│   ├── memory/
+│   └── registers/
+│
+├── tb/
+│   ├── alu/
+│   ├── control/
+│   ├── cpu/
+│   ├── integration/
+│   └── registers/
+│
+├── programs/
+│   ├── examples/
+│   └── tests/
+│
+├── docs/
+│   ├── architecture/
+│   ├── isa/
+│   ├── verification/
+│   └── development-log/
+│
+├── fpga/
+│   ├── top/
+│   ├── constraints/
+│   ├── gowin/
+│   └── build/
+│
+└── simulations/
 ```
 
 ---
@@ -329,21 +340,22 @@ FPGA-Synthesizable-8Bit-CPU/
 
 ---
 
-## Status
+## Project Status
 
-**RTL:** complete
-**ISA verification:** complete
-**Synthesis:** complete
-**Place & Route:** complete
-**Physical FPGA validation:** pending board arrival
+| Stage | Status |
+| --- | --- |
+| RTL design | ✅ Complete |
+| Module verification | ✅ Complete |
+| Full ISA verification | ✅ Complete |
+| CPU integration | ✅ Complete |
+| FPGA synthesis | ✅ Complete |
+| Place & Route | ✅ Complete |
+| Physical FPGA validation | ⏳ Pending board arrival |
 
 ---
 
 ## Author
 
-**Alex Marfo Appiah**
-Computer Engineering
+**Alex Marfo Appiah**  
+Computer Engineering  
 Kwame Nkrumah University of Science and Technology (KNUST)
-
-```
-```
