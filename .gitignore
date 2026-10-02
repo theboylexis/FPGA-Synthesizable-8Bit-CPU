@@ -17,3 +17,5 @@
 fpga/gowin/**/impl/
 fpga/gowin/**/temp/
 fpga/build/
+fpga/bringup/button_test/gowin/
+fpga/bringup/led_blink/gowin/

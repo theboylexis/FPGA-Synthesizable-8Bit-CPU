@@ -3,7 +3,7 @@
 <p align="center">
   <strong>
     A custom multi-cycle 8-bit processor designed in Verilog, verified end-to-end in simulation,
-    and implemented for the Sipeed Tang Nano 20K FPGA.
+    and physically validated on the Sipeed Tang Nano 20K FPGA.
   </strong>
 </p>
 
@@ -25,7 +25,7 @@ The processor was designed from the RTL level upward in Verilog and includes a r
 
 The CPU uses a fixed-width 16-bit instruction format and a custom 13-instruction ISA. Each subsystem was verified independently before being integrated into the complete processor.
 
-The full ISA has been verified end-to-end in simulation using Icarus Verilog. The design has also been synthesized and successfully passed Place & Route for the Sipeed Tang Nano 20K FPGA.
+The full ISA was verified end-to-end in simulation using Icarus Verilog. The design was then synthesized, passed Place & Route, programmed onto a Sipeed Tang Nano 20K, and validated on physical hardware using arithmetic, memory/data-movement, and control-flow test programs.
 
 ---
 
@@ -47,37 +47,85 @@ The full ISA has been verified end-to-end in simulation using Icarus Verilog. Th
 
 ### Processor Flow
 
-```text
-PC
-│
-▼
-Program Memory
-│
-▼
-Instruction Register
-│
-▼
-Instruction Decoder
-│
-├──────────────► Control Unit
-│
-▼
-Register File ─────► ALU ─────► Status Register
-     │                │
-     │                └────────────┐
-     │                             │
-     └────► Data Memory            │
-                │                  │
-                └────► Writeback MUX ─────► Register File
-```
-
-Instruction execution is coordinated through the following states:
+At a high level, instructions move through the processor in the following path:
 
 ```text
-FETCH → DECODE → EXECUTE / MEMORY → WRITEBACK → FETCH
+          ┌─────────────────────┐
+          │   Program Counter   │
+          │        (PC)         │
+          └──────────┬──────────┘
+                     │ address
+                     ▼
+          ┌─────────────────────┐
+          │   Program Memory    │
+          └──────────┬──────────┘
+                     │ 16-bit instruction
+                     ▼
+          ┌─────────────────────┐
+          │ Instruction Register│
+          └──────────┬──────────┘
+                     │
+                     ▼
+          ┌─────────────────────┐
+          │ Instruction Decoder │
+          └──────┬────────┬─────┘
+                 │        │
+        operands │        │ opcode / fields
+                 ▼        ▼
+       ┌────────────────┐ ┌────────────────┐
+       │ Register File  │ │  Control Unit  │
+       └───────┬────────┘ └───────┬────────┘
+               │                  │
+               │ register data    │ control signals
+               ▼                  │
+       ┌────────────────┐         │
+       │      ALU       │◄────────┘
+       └───────┬────────┘
+               │
+        ┌──────┴─────────────┐
+        │                    │
+        ▼                    ▼
+┌────────────────┐   ┌────────────────┐
+│ Status Register│   │  Data Memory   │
+│   Z, N, C      │   │  LOAD / STORE  │
+└────────────────┘   └───────┬────────┘
+                              │
+                              ▼
+                     ┌────────────────┐
+                     │ Writeback MUX  │
+                     └───────┬────────┘
+                             │
+                             ▼
+                     ┌────────────────┐
+                     │ Register File  │
+                     └────────────────┘
 ```
 
-Different instructions use only the states they require.
+The **Control Unit** coordinates the datapath rather than carrying instruction data itself. It uses the decoded opcode and current FSM state to generate control signals for the Program Counter, Instruction Register, ALU, register file, status register, data memory, and writeback multiplexer.
+
+The main instruction cycle is:
+
+```text
+FETCH
+  ↓
+DECODE
+  ↓
+EXECUTE / MEMORY / WRITEBACK
+  ↓
+FETCH next instruction
+```
+
+The exact path depends on the instruction. For example:
+
+```text
+ADD   : FETCH → DECODE → EXECUTE → WRITEBACK → FETCH
+LOAD  : FETCH → DECODE → MEMORY → WRITEBACK → FETCH
+STORE : FETCH → DECODE → MEMORY → FETCH
+CMP   : FETCH → DECODE → EXECUTE → FETCH
+LDI   : FETCH → DECODE → WRITEBACK → FETCH
+JMP   : FETCH → DECODE → EXECUTE → FETCH
+HALT  : FETCH → DECODE → HALT
+```
 
 ---
 
@@ -104,7 +152,7 @@ The processor uses 16-bit fixed-width instructions with 4-bit opcodes.
 | `1110` | RESERVED | Reserved |
 | `1111` | RESERVED | Reserved |
 
-The ISA contains 13 assigned instructions and 3 reserved opcodes.
+The ISA contains **13 assigned instructions and 3 reserved opcodes**.
 
 ### Instruction Formats
 
@@ -278,21 +326,122 @@ Branch and jump behavior was verified by confirming that instructions on skipped
 
 ## FPGA Implementation
 
-The CPU has been brought into GOWIN EDA and targeted to the Sipeed Tang Nano 20K.
+The CPU was implemented on a **Sipeed Tang Nano 20K** using GOWIN EDA.
 
-Completed FPGA implementation work:
+Completed FPGA work includes:
 
 - full CPU synthesis
 - Tang Nano 20K board-level top module
-- 27 MHz clock integration
-- reset and register-selection inputs
-- LED-based register debug output
-- physical pin constraints
+- 27 MHz onboard clock integration
+- physical constraints for clock, pushbuttons, and LEDs
 - successful Place & Route
+- SRAM programming through the onboard debugger
+- LED-based register inspection
+- pushbutton synchronization and debounce logic for reliable register selection
+- physical validation of multiple processor test programs
 
-The implementation currently uses well under 1% of the available FPGA fabric.
+The FPGA wrapper exposes the lower six bits of a selected CPU register through the six onboard LEDs. A pushbutton is used to advance through registers, allowing the architectural state of the processor to be inspected directly on the board.
 
-Physical board programming and hardware validation will begin once the Tang Nano 20K board is available.
+### Hardware Bring-Up
+
+Before programming the CPU, a minimal LED-blink design was used to validate the FPGA programming path:
+
+```text
+Verilog
+→ Synthesis
+→ Place & Route
+→ Configuration File
+→ GOWIN Programmer
+→ Tang Nano 20K
+→ Physical LED Output
+```
+
+This confirmed the onboard 27 MHz clock, LED pin mapping, programmer connection, and FPGA configuration flow.
+
+### Hardware Validation
+
+Three end-to-end CPU programs were then validated on physical hardware.
+
+#### Arithmetic
+
+```text
+LDI R0, 5
+LDI R1, 3
+ADD R2, R0, R1
+HALT
+```
+
+Observed:
+
+```text
+R0 = 5
+R1 = 3
+R2 = 8
+```
+
+#### Memory / Data Movement
+
+```text
+LDI   R0, 10
+LDI   R1, 6
+SUB   R2, R0, R1
+MOV   R3, R2
+STORE R3, 0x20
+LOAD  R4, 0x20
+HALT
+```
+
+Observed:
+
+```text
+R0 = 10
+R1 = 6
+R2 = 4
+R3 = 4
+R4 = 4
+```
+
+The loaded value matched the value previously stored in data memory.
+
+#### Logic / Control Flow
+
+The hardware test exercised:
+
+```text
+AND
+OR
+XOR
+CMP
+BEQ taken
+BEQ not taken
+JMP
+HALT
+```
+
+Observed final register state:
+
+```text
+R0 = 15
+R1 = 51
+R2 = 3
+R3 = 63
+R4 = 60
+R5 = 85
+R6 = 17
+R7 = 0
+```
+
+The observed register state matched the expected simulation results, including the correct skipping of instructions during taken branches and jumps.
+
+### FPGA Bring-Up Debugging
+
+During hardware bring-up, the raw register-selection pushbutton produced unreliable stepping due to mechanical switch bounce.
+
+The issue was isolated using dedicated button and clock test designs. The board I/O and 27 MHz clock were verified independently before synchronization and debounce logic were added to the FPGA wrapper.
+
+After the fix, each physical button press advanced the debug register selector by exactly one register.
+
+This provided a practical introduction to the difference between idealized simulation inputs and asynchronous mechanical inputs on physical hardware.
 
 ---
 
@@ -327,6 +476,7 @@ FPGA-Synthesizable-8Bit-CPU/
 ├── fpga/
 │   ├── top/
 │   ├── constraints/
+│   ├── bringup/
 │   ├── gowin/
 │   └── build/
 │
@@ -351,7 +501,8 @@ FPGA-Synthesizable-8Bit-CPU/
 | CPU integration | ✅ Complete |
 | FPGA synthesis | ✅ Complete |
 | Place & Route | ✅ Complete |
-| Physical FPGA validation | ⏳ Pending board arrival |
+| FPGA programming | ✅ Complete |
+| Physical FPGA validation | ✅ Complete |
 
 ---
 

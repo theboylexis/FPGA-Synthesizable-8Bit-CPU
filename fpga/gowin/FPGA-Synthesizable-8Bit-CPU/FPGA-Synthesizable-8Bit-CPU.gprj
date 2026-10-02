@@ -17,5 +17,6 @@
         <File path="src/status_register.v" type="file.verilog" enable="1"/>
         <File path="src/tang_nano_20k_top.v" type="file.verilog" enable="1"/>
         <File path="src/tang_nano_20k.cst" type="file.cst" enable="1"/>
+        <File path="src/program.hex" type="file.other" enable="1"/>
     </FileList>
 </Project>
