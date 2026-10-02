@@ -328,6 +328,16 @@ Branch and jump behavior was verified by confirming that instructions on skipped
 
 The CPU was implemented on a **Sipeed Tang Nano 20K** using GOWIN EDA.
 
+<p align="center">
+  <img src="assets/tang-nano-20k-cpu-validation.png"
+       alt="FPGA-Synthesizable 8-Bit CPU running on the Sipeed Tang Nano 20K"
+       width="700"/>
+</p>
+
+<p align="center">
+  <em>Physical validation of the custom 8-bit CPU on the Sipeed Tang Nano 20K FPGA.</em>
+</p>
+
 Completed FPGA work includes:
 
 - full CPU synthesis
@@ -449,6 +459,9 @@ This provided a practical introduction to the difference between idealized simul
 
 ```text
 FPGA-Synthesizable-8Bit-CPU/
+├── assets/
+│   └── tang-nano-20k-cpu-validation.png
+│
 ├── rtl/
 │   ├── alu/
 │   ├── control/
